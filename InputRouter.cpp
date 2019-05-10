@@ -4,17 +4,19 @@
 
 #include "InputRouter.h"
 
+int InputRouter::input = ERR;
+
 InputRouter::InputRouter()
 {
-    this->input = ERR;
+    InputRouter::input = ERR;
 }
 
 void InputRouter::checkInput()
 {
-    this->input = getch();
+    InputRouter::input = getch();
 }
 
 int InputRouter::getInput()
 {
-    return this->input;
+    return InputRouter::input;
 }

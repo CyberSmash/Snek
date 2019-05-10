@@ -31,7 +31,7 @@ public:
 
     ~GameObject() = default;
 
-private:
+protected:
     int y;
     int x;
     WINDOW* win;

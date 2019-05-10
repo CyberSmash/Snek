@@ -10,6 +10,7 @@
 #include "defns.h"
 #include <list>
 
+
 using std::list;
 
 struct Segment
@@ -17,7 +18,7 @@ struct Segment
     bool ishead;
     int y;
     int x;
-    wchar_t draw_chr;
+    const wchar_t* draw_chr;
 };
 
 class Snake : public GameObject
@@ -36,13 +37,17 @@ public:
     bool isDead();
     void kill();
 
+    int getLength() { return segments.size(); }
 
 private:
 
     int processInput();
+    const wchar_t* pickSegmentCharacter();
+    const wchar_t* pickHeadCharacter();
 
     list<Segment> segments;
     Direction direction;
+    Direction oldDirection;
     bool dead = false;
     int length;
     InputRouter inputRouter;
