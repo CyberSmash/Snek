@@ -30,17 +30,24 @@ public:
     void setDirection(Direction direction);
     Direction getDirection();
 
-    void Update();
-    void Draw();
+    void Update() override;
+    void Draw() override;
 
     // Determine or set whether or not the snake is dead.
     bool isDead();
     void kill();
 
+    int getx() override;
+    int gety() override;
+
     int getLength() { return segments.size(); }
 
+    void addSegments(int numSegments);
+    bool Collider(std::shared_ptr<GameObject> other) override;
 private:
 
+    bool DeathAnimation();
+    bool eatingSelf();
     int processInput();
     const wchar_t* pickSegmentCharacter();
     const wchar_t* pickHeadCharacter();
@@ -51,6 +58,7 @@ private:
     bool dead = false;
     int length;
     InputRouter inputRouter;
+    int segmentsToAdd = 0;
 };
 
 

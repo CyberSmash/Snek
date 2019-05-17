@@ -3,6 +3,7 @@
 //
 
 #include "Snake.h"
+#include "Tag.h"
 
 //#define HEAD_CHAR L'@'
 //#define SEGMENT_CHAR L'm'
@@ -23,9 +24,10 @@ const wchar_t* HEAD_TOP = L"\u2579";
 const wchar_t* HEAD_RIGHT = L"\u257A";
 const wchar_t* HEAD_BOTTOM = L"\u257B";
 
-Snake::Snake(WINDOW *win, int y, int x, int length, Direction startDirection) :
-    GameObject(win, y, x), length(length), direction(startDirection), oldDirection(startDirection)
+Snake::Snake(WINDOW* win, int y, int x, int length, Direction startDirection) :
+    GameObject(win, y, x), direction(startDirection), oldDirection(startDirection),length(length)
 {
+    tag = Tag::PLAYER;
     for (int i = 0; i < length; i++)
     {
         Segment seg;
@@ -73,10 +75,25 @@ Direction Snake::getDirection()
  */
 void Snake::Update()
 {
+    if (isDead())
+    {
+        bool result = DeathAnimation();
+        if (!result)
+        {
+            Destroy();
+        }
+        return;
+    }
+
+    if (eatingSelf())
+    {
+        kill();
+        return;
+    }
     processInput();
     struct Segment oldHead = segments.front();
     Segment newHead = {
-            .ishead = false, // Currently Unused.
+            .ishead = true, // Currently Unused.
             .y = oldHead.y,
             .x = oldHead.x,
             .draw_chr = HORIZONTAL, // Currently unused.
@@ -120,11 +137,32 @@ void Snake::Update()
         }
 
     }
+
+    segments.front().ishead = false;
+    // This is a super inneficient way of doing this. It would be better to go through and update
+    // each segments y,x values.
     segments.push_front(newHead);
     // Keep the same length, drop the last segment.
     // TODO: This will need to check for a food item, if that's the case,
     // we'll need to not drop the back segment, but let it stay for a single update.
-    segments.pop_back();
+    if (segmentsToAdd <= 0)
+    {
+        segments.pop_back();
+    }
+    else
+    {
+        segmentsToAdd--;
+    }
+}
+
+int Snake::getx()
+{
+    return segments.front().x;
+}
+
+int Snake::gety()
+{
+    return segments.front().y;
 }
 
 /**
@@ -222,6 +260,11 @@ int Snake::processInput()
     }
 
     return input;
+}
+
+void Snake::addSegments(int numSegments)
+{
+    segmentsToAdd = numSegments;
 }
 
 /**
@@ -326,5 +369,74 @@ const wchar_t* Snake::pickHeadCharacter()
             return HEAD_RIGHT;
         case Direction::RIGHT:
             return HEAD_LEFT;
+        default:
+            return HEAD_LEFT;
     }
+}
+
+bool Snake::Collider(std::shared_ptr<GameObject> other)
+{
+    // TODO: Determine what happens if we hit another snake.
+    if (other->getTag() == Tag::FOOD )
+    {
+        addSegments(1);
+    }
+
+    return false;
+}
+
+/**
+ * Determine if the snake is eating itself.
+ *
+ * @note This could be handled in the collider, however, the collider only takes one point
+ * of contact, and right now that's just the head. We could start re-working the code
+ * to treat each segment of our snake's body as a game object in and of itself, but
+ * maybe that's overkill? Maybe for another day.
+ *
+ * @return True if the snake is eating itself, False otherwise.
+ */
+bool Snake::eatingSelf()
+{
+    Segment head = segments.front();
+    for (Segment seg : segments)
+    {
+        if (seg.ishead)
+        {
+            continue;
+        }
+        if (seg.y == head.y && seg.x == head.x)
+        {
+            return true;
+        }
+
+    }
+    return false;
+}
+
+/**
+ * Plays a simple animation where the snake slowly explodes over several frames, segment by segment.
+ *
+ * @return true if this animtion should continue for the next frame, false if it's finished.
+ */
+bool Snake::DeathAnimation()
+{
+    if (segments.empty())
+    {
+        return false;
+    }
+
+    // Grab the last segment, determine if it's character is a * or not
+    int result = wcscmp(segments.back().draw_chr, L"*");
+
+    if (result != 0)
+    {
+        // Last element hasn't been made a * yet, make it one
+        segments.back().draw_chr = L"*";
+    }
+    else
+    {
+        // Remove from the list
+        segments.pop_back();
+    }
+    return true;
 }

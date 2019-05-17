@@ -4,7 +4,22 @@
 
 #include "GameObject.h"
 
-GameObject::GameObject(WINDOW *win, int y, int x) : win(win), x(x), y(y)
+GameObject::GameObject() // x and y have already been set to default values.
+{
+
+}
+
+GameObject::GameObject(WINDOW *gameWin, int y, int x) : y(y), x(x), win(gameWin)
+{
+
+}
+
+void GameObject::Draw()
+{
+
+}
+
+void GameObject::Update()
 {
 
 }
@@ -43,4 +58,29 @@ int GameObject::gety()
 int GameObject::getx()
 {
     return this->x;
+}
+
+void GameObject::Destroy()
+{
+    destroy = true;
+}
+
+Tag GameObject::getTag()
+{
+    return tag;
+}
+
+void GameObject::setTag(Tag newTag)
+{
+    tag = newTag;
+}
+
+bool GameObject::Collider(std::shared_ptr<GameObject> other)
+{
+    return false;
+}
+
+bool GameObject::isDestroyed()
+{
+    return destroy;
 }

@@ -25,8 +25,10 @@ public:
     InputRouter();
     void checkInput();
     int getInput();
+    void setWindow(WINDOW* win);
 private:
     static int input;
+    static WINDOW* win;
 };
 
 

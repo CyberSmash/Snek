@@ -8,6 +8,9 @@
 #include "Snake.h"
 #include "Food.h"
 #include <list>
+#include <memory>
+using std::shared_ptr;
+using std::unique_ptr;
 
 enum class GameState
 {
@@ -25,11 +28,30 @@ public:
     void Begin();
     void MainLoop();
     void End();
+    virtual ~Engine() = default;
+    bool areAnyDead();
+    template <typename T> list<shared_ptr<T>> FindGOByType();
+
+    void addGameObject(shared_ptr<GameObject> go);
+    void RunGame();
+    int numGameObjects();
+    template <typename T> bool isType(shared_ptr<GameObject> go);
+
+
 
 protected:
-    int numPlayers;
-    WINDOW* win;
-    list<GameObject> gameObjects;
+
+    void processCollisions();
+    void processDestroyed();
+
+    int                 numPlayers  =   0;
+    WINDOW*             win         =   nullptr;
+    GameState           state       =   GameState::BEGIN;
+    list<shared_ptr<GameObject>>    gameObjects;
+    unique_ptr<InputRouter> inputRouter = nullptr;
+
+private:
+
 };
 
 

@@ -3,30 +3,38 @@
 //
 
 #include "Food.h"
-
+#include <ncurses.h>
+#include <stdio.h>
+#include <memory>
 const wchar_t* FOOD_CHAR = L"@";
 
-Food::Food(): GameObject(nullptr, 0, 0)
+Food::Food(WINDOW* foodwin, int y, int x) : GameObject(foodwin, y, x)
 {
-}
-
-Food::Food(WINDOW *win, int y, int x) : GameObject(win, y, x)
-{
-
+    tag = Tag::FOOD;
 }
 
 void Food::Update()
 {
     // Nothing to do here, really.
+
 }
 
 void Food::Draw()
 {
-    if (win == nullptr)
-    {
-        return;
-    }
-
     mvwaddwstr(win, y, x, FOOD_CHAR);
+}
 
+
+/**
+ *
+ * @param go
+ * @return
+ */
+bool Food::Collider(std::shared_ptr<GameObject> other)
+{
+    if (other->getTag() == Tag::PLAYER)
+    {
+        Destroy();
+    }
+    return true;
 }

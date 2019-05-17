@@ -6,21 +6,22 @@
 #define SNEK_FOOD_H
 
 #include "GameObject.h"
+#include <memory>
 
 class Food : public GameObject
 {
 public:
-    Food();
-    Food(WINDOW* win, int y, int x);
-
-    void Update();
-    void Draw();
-
+    Food(WINDOW* foodwin, int y, int x);
+    ~Food() = default;
+    void Update() override;
+    void Draw() override;
+    bool Collider(std::shared_ptr<GameObject> other) override;
 protected:
     int segment_value = 1;
-    WINDOW* win = nullptr;
+private:
+
+
 
 };
-
 
 #endif //SNEK_FOOD_H
