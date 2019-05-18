@@ -23,36 +23,42 @@ enum class GameState
 class Engine
 {
 public:
+
+    /* Constructors */
     Engine();
     Engine(WINDOW* gameWindow, int players);
+
+    /* Game Loops */
     void Begin();
     void MainLoop();
     void End();
+
+    /* Destructor */
     virtual ~Engine() = default;
-    bool areAnyDead();
-    template <typename T> list<shared_ptr<T>> FindGOByType();
 
-    void addGameObject(shared_ptr<GameObject> go);
-    void RunGame();
-    int numGameObjects();
-    template <typename T> bool isType(shared_ptr<GameObject> go);
-
-
+    template <typename T>
+    std::list<shared_ptr<T>>    FindGOByType();
+    bool                        areAnyDead();
+    void                        addGameObject(shared_ptr<GameObject> go);
+    void                        RunGame();
+    int                         numGameObjects();
 
 protected:
 
     void processCollisions();
     void processDestroyed();
 
-    int                 numPlayers  =   0;
-    WINDOW*             win         =   nullptr;
-    GameState           state       =   GameState::BEGIN;
-    list<shared_ptr<GameObject>>    gameObjects;
-    unique_ptr<InputRouter> inputRouter = nullptr;
+    int                                 numPlayers  {0};
+    WINDOW*                             win         {nullptr};
+    GameState                           state       {GameState::BEGIN};
+    std::list<shared_ptr<GameObject>>   gameObjects {};
+    unique_ptr<InputRouter>             inputRouter {nullptr};
 
-private:
 
 };
+
+
+extern std::shared_ptr<Engine> gameEngine;
 
 
 #endif //SNEK_ENGINE_H

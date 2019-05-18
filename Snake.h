@@ -11,14 +11,33 @@
 #include <list>
 
 
-using std::list;
+/**
+ * TODO: I need to figure out a better way to store these variables.
+ */
+extern const wchar_t* VERTICAL;
+extern const wchar_t* HORIZONTAL;
+extern const wchar_t* UP_RIGHT_ELBOW;
+extern const wchar_t* UP_LEFT_ELBOW;
+extern const wchar_t* DOWN_RIGHT_ELBOW;
+extern const wchar_t* DOWN_LEFT_ELBOW;
+extern const wchar_t* RIGHT_DOWN_ELBOW;
+extern const wchar_t* LEFT_DOWN_ELBOW;
+extern const wchar_t* RIGHT_UP_ELBOW;
+extern const wchar_t* LEFT_UP_ELBOW;
+
+extern const wchar_t* HEAD_LEFT;
+extern const wchar_t* HEAD_TOP;
+extern const wchar_t* HEAD_RIGHT;
+extern const wchar_t* HEAD_BOTTOM;
+
+// TODO: Remove this and clean it up, maybe typedef out the std::list<std::shared_ptr<GameObject>>
 
 struct Segment
 {
-    bool ishead;
-    int y;
-    int x;
-    const wchar_t* draw_chr;
+    bool isHead {false};
+    int y {0};
+    int x {0};
+    const wchar_t* draw_chr {HEAD_BOTTOM};
 };
 
 class Snake : public GameObject
@@ -52,13 +71,13 @@ private:
     const wchar_t* pickSegmentCharacter();
     const wchar_t* pickHeadCharacter();
 
-    list<Segment> segments;
-    Direction direction;
-    Direction oldDirection;
-    bool dead = false;
-    int length;
-    InputRouter inputRouter;
-    int segmentsToAdd = 0;
+    std::list<Segment>  segments      {};
+    Direction           direction     {Direction::UP};
+    Direction           oldDirection  {Direction::UP};
+    bool                dead          {false};
+    int                 length        {0};
+    InputRouter         inputRouter   {};
+    int                 segmentsToAdd {0};
 };
 
 

@@ -30,17 +30,39 @@ Snake::Snake(WINDOW* win, int y, int x, int length, Direction startDirection) :
     tag = Tag::PLAYER;
     for (int i = 0; i < length; i++)
     {
+
         Segment seg;
-        seg.x = x + i;
-        seg.y = y;
-        if (startDirection == Direction::LEFT || startDirection == Direction::RIGHT)
+        // Handle the head special case.
+        if (i == 0)
         {
-            seg.draw_chr = HORIZONTAL;
+            seg.isHead = true;
+            seg.draw_chr = pickHeadCharacter();
+            seg.y = y;
+            seg.x = x;
+            segments.push_back(seg);
+            continue;
         }
-        else
+        switch(startDirection)
         {
-            seg.draw_chr = VERTICAL;
+            case Direction::UP:
+                seg.y = y - i;
+                seg.x = x;
+                break;
+            case Direction::RIGHT:
+                seg.y = y;
+                seg.x = x - i;
+                break;
+            case Direction::DOWN:
+                seg.y = y + i;
+                seg.x = x;
+                break;
+            case Direction::LEFT:
+                seg.y = y;
+                seg.x = x + i;
+                break;
         }
+
+        seg.draw_chr = pickSegmentCharacter();
         segments.push_back(seg);
     }
 }
@@ -93,7 +115,7 @@ void Snake::Update()
     processInput();
     struct Segment oldHead = segments.front();
     Segment newHead = {
-            .ishead = true, // Currently Unused.
+            .isHead = true, // Currently Unused.
             .y = oldHead.y,
             .x = oldHead.x,
             .draw_chr = HORIZONTAL, // Currently unused.
@@ -138,7 +160,7 @@ void Snake::Update()
 
     }
 
-    segments.front().ishead = false;
+    segments.front().isHead = false;
     // This is a super inneficient way of doing this. It would be better to go through and update
     // each segments y,x values.
     segments.push_front(newHead);
@@ -400,7 +422,7 @@ bool Snake::eatingSelf()
     Segment head = segments.front();
     for (Segment seg : segments)
     {
-        if (seg.ishead)
+        if (seg.isHead)
         {
             continue;
         }

@@ -2,18 +2,29 @@
 // Created by jordan on 5/10/19.
 //
 
-#include "Engine.h"
-#include "algorithm"
+
+#include <algorithm>
 #include <thread>
 #include <chrono>
-
+#include "Engine.h"
+#include "EngineUtils.h"
 
 #define LOOP_SLEEP_MS 200
 
+
+/**
+ * Default constructor.
+ */
 Engine::Engine() : numPlayers(0), win(nullptr)
 {
 }
 
+
+/**
+ * Constructor
+ * @param gameWindow The game window we will be drawing to.
+ * @param players The number of players.
+ */
 Engine::Engine(WINDOW *gameWindow, int players) : numPlayers(players), win(gameWindow)
 {
     inputRouter = std::make_unique<InputRouter>();
@@ -29,12 +40,22 @@ Engine::Engine(WINDOW *gameWindow, int players) : numPlayers(players), win(gameW
     }
 }
 
+
+/**
+ * A routine for beginning the game. This could provide
+ * a splash screen, menu screens whatever before we get into the main
+ * loop.
+ */
 void Engine::Begin()
 {
     // Do anything we need to then start the main loop.
     state = GameState::MAIN;
 }
 
+
+/**
+ * The engine's main game loop.
+ */
 void Engine::MainLoop()
 {
     // Do anything we need to, then end the game.
@@ -69,6 +90,19 @@ void Engine::MainLoop()
     state = GameState::END;
 }
 
+
+/**
+ * A routine for when the main loop ends. Display anything needed to display once the game finishs.
+ */
+void Engine::End()
+{
+    // TODO: Should we go back to Engine::Begin?
+}
+
+
+/**
+ * Determine if there is a collision, and if there is, execute each game object's collider action.
+ */
 void Engine::processCollisions()
 {
     // auto const &go syntax is weird. Essentially I'm telling the compiler
@@ -80,6 +114,7 @@ void Engine::processCollisions()
     {
         for ( auto const &other : gameObjects)
         {
+            // We don't want to collide with ourselves.
             if (go == other)
             {
                 continue;
@@ -92,6 +127,16 @@ void Engine::processCollisions()
     }
 }
 
+
+/**
+ * Remove any destroyed game objects from our list.
+ *
+ * If game object has its Destroy() function called, then this function will clean them
+ * up at the end of a frame.
+ *
+ * @TODO: Destroy returns a boolean value which we should use to decide if we even want to call this function.
+ * That would add to more efficiancy.
+ */
 void Engine::processDestroyed()
 {
     for (auto it = gameObjects.begin(); it != gameObjects.end();)
@@ -106,10 +151,12 @@ void Engine::processDestroyed()
     }
 }
 
-void Engine::End()
-{
-}
 
+/**
+ * Begin the game. Main entrypoin for our game. Manages state.
+ *
+ * TODO: Not sure how this should work. Can it be removed entierly?
+ */
 void Engine::RunGame()
 {
 
@@ -129,6 +176,11 @@ void Engine::RunGame()
     }
 }
 
+
+/**
+ * Add a game object to the game.
+ * @param go The game object to add.
+ */
 void Engine::addGameObject(shared_ptr<GameObject> go)
 {
     if (go == nullptr)
@@ -147,15 +199,25 @@ void Engine::addGameObject(shared_ptr<GameObject> go)
     gameObjects.emplace_back(go);
 }
 
+
+/**
+ * Determine the number of game objects.
+ * @return The game objects.
+ */
 int Engine::numGameObjects()
 {
     return gameObjects.size();
 }
 
+
+/**
+ * Determine if any of the snakes on the board are dead.
+ * @return True if one of the snakes is dead.
+ */
 bool Engine::areAnyDead()
 {
 
-    list<shared_ptr<Snake>> snakes = FindGOByType<Snake>();
+    std::list<shared_ptr<Snake>> snakes = FindGOByType<Snake>();
     for (auto snake : snakes)
     {
         if (snake->isDead())
@@ -167,6 +229,7 @@ bool Engine::areAnyDead()
     return true;
 
 }
+
 
 /**
  * Get all game objects of  specific type.
@@ -183,13 +246,13 @@ bool Engine::areAnyDead()
  * @return A list of all of the objects matching the type.
  */
 template<typename T>
-list<shared_ptr<T>> Engine::FindGOByType()
+std::list<shared_ptr<T>> Engine::FindGOByType()
 {
-    list<shared_ptr<T>> l;
+    std::list<shared_ptr<T>> l;
     // I could use auto here. However, I don't like doing that unless the type is
     // difficult to predict (such as with iterators) or if the actual type isn't somewhere
     // nearby.
-    for (shared_ptr<GameObject> go : gameObjects)
+    for (shared_ptr<GameObject> const &go : gameObjects)
     {
         // Downcast the pointer. If the downcast fails, then nullptr will be returned, and
         // the object isn't the one we want.
@@ -203,22 +266,16 @@ list<shared_ptr<T>> Engine::FindGOByType()
 }
 
 /**
- * Determine if this type is the same as the suggested one.
+ * A global engine variable for our game.
  *
- * @tparam T - The type that you are comparing against.
- * @param go - The game object in queston.
- * @return True if the the type is the same.
+ * @note: Yeah, globals, they suck right? However, since the engine keeps track of game objects,
+ * but game objects need to affect the engine, or at least interact with it and its data, this interface
+ * allows that to happen.
  */
-template <typename T>
-bool Engine::isType(shared_ptr<GameObject> go)
-{
-    shared_ptr<T> tmp = std::dynamic_pointer_cast<T>(go);
-    return tmp != nullptr;
-}
+std::shared_ptr<Engine> gameEngine;
 
-
-template class list<shared_ptr<GameObject>> Engine::FindGOByType<GameObject>();
-template class list<shared_ptr<Snake>> Engine::FindGOByType<Snake>();
-template class list<shared_ptr<Food>> Engine::FindGOByType<Food>();
+template class std::list<shared_ptr<GameObject>> Engine::FindGOByType<GameObject>();
+template class std::list<shared_ptr<Snake>> Engine::FindGOByType<Snake>();
+template class std::list<shared_ptr<Food>> Engine::FindGOByType<Food>();
 
 

@@ -39,9 +39,9 @@ int main() {
     nodelay(game_window, true);
 
     wclear(game_window);
-    Engine e(game_window, 0);
+    gameEngine = std::make_shared<Engine>(game_window, 1);
     InputRouter inputRouter;
-    auto player = std::make_shared<Snake>(game_window, 5, 5, 5, Direction::RIGHT);
+    //auto player = std::make_shared<Snake>(game_window, 5, 5, 5, Direction::RIGHT);
 
 
     int foody = rand() % WINMAX_Y;
@@ -49,11 +49,11 @@ int main() {
 
     auto food = std::make_shared<Food>(game_window, foody, foodx);
 
-    e.addGameObject(player);
-    e.addGameObject(food);
+    //gameEngine->addGameObject(player);
+    gameEngine->addGameObject(food);
 
 
-    e.MainLoop();
+    gameEngine->MainLoop();
 
     endwin();
     return 0;
