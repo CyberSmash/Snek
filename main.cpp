@@ -9,6 +9,7 @@
 #include <random>
 #include <time.h>
 #include "Engine.h"
+#include "GameRunner.h"
 #include <memory>
 
 #define Y 0
@@ -39,20 +40,12 @@ int main() {
     nodelay(game_window, true);
 
     wclear(game_window);
+
     gameEngine = std::make_shared<Engine>(game_window, 1);
-    InputRouter inputRouter;
-    //auto player = std::make_shared<Snake>(game_window, 5, 5, 5, Direction::RIGHT);
 
+    std::shared_ptr<GameRunner> runner = std::make_shared<GameRunner>(game_window);
 
-    int foody = rand() % WINMAX_Y;
-    int foodx = rand() % WINMAX_X;
-
-    auto food = std::make_shared<Food>(game_window, foody, foodx);
-
-    //gameEngine->addGameObject(player);
-    gameEngine->addGameObject(food);
-
-
+    gameEngine->addGameObject(runner);
     gameEngine->MainLoop();
 
     endwin();

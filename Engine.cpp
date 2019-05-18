@@ -265,6 +265,28 @@ std::list<shared_ptr<T>> Engine::FindGOByType()
     return l;
 }
 
+
+/**
+ * Find all functions by their tag. This is likely way more efficiant than finding them by their type, however
+ * the user can make the tag of an object anything they want.
+ *
+ * @param gameObjects The game objects to search through
+ * @return A list of matching game objects. This list will be empty if none are found.
+ */
+std::list<std::shared_ptr<GameObject>> Engine::FindAllByTag(Tag tag)
+{
+    std::list<std::shared_ptr<GameObject>> matches;
+    for (auto const &go : gameObjects)
+    {
+        if (go->getTag() == tag)
+        {
+            matches.emplace_back(go);
+        }
+    }
+
+    return matches;
+}
+
 /**
  * A global engine variable for our game.
  *
@@ -277,5 +299,5 @@ std::shared_ptr<Engine> gameEngine;
 template class std::list<shared_ptr<GameObject>> Engine::FindGOByType<GameObject>();
 template class std::list<shared_ptr<Snake>> Engine::FindGOByType<Snake>();
 template class std::list<shared_ptr<Food>> Engine::FindGOByType<Food>();
-
+//template class std::list<shared_ptr<GameRunner>> Engine::FindGOByType<GameRunner>();
 

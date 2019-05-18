@@ -42,7 +42,7 @@ public:
     void                        addGameObject(shared_ptr<GameObject> go);
     void                        RunGame();
     int                         numGameObjects();
-
+    std::list<std::shared_ptr<GameObject>> FindAllByTag(Tag tag);
 protected:
 
     void processCollisions();
