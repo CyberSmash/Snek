@@ -1,0 +1,3 @@
++ Installed libsdl2 -- trying to get some audio.
++ Check in the future for open video game audio samples.
++ Check out: http://lazyfoo.net/SDL_tutorials/lesson11/index.php
