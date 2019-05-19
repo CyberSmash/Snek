@@ -9,8 +9,6 @@
 #include "Engine.h"
 #include "EngineUtils.h"
 
-#define LOOP_SLEEP_MS 200
-
 
 /**
  * Default constructor.
@@ -82,7 +80,7 @@ void Engine::MainLoop()
         processDestroyed();
 
         wrefresh(win);
-        std::this_thread::sleep_for(std::chrono::milliseconds(LOOP_SLEEP_MS));
+        std::this_thread::sleep_for(std::chrono::milliseconds(gameSleep));
 
         // Sleep to provide a framerate.
 
@@ -285,6 +283,29 @@ std::list<std::shared_ptr<GameObject>> Engine::FindAllByTag(Tag tag)
     }
 
     return matches;
+}
+
+/**
+ * Determine if there is any game object at the current location.
+ *
+ * @TODO: Need to figure out how I can deal with the fact that in the case of a snake, this will not take the tail into
+ * account.
+ *
+ * @param y The y location to look at
+ * @param x The x location to look at
+ * @return True if there is a game object at this location, false otherwise.
+ */
+bool Engine::gameObjectAtLocation(int y, int x)
+{
+    for (auto const &go : gameObjects)
+    {
+        if (go->getx() == x && go->gety() == y)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**

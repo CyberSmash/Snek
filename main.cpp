@@ -25,16 +25,13 @@ void setup_screen()
     curs_set(0);
 }
 
-int main() {
-    std::srand(time(NULL));
-    //const wchar_t* skulls = L"\u2620 Hello! \u2620";
-    //const wchar_t* taco = {0xd83c, 0xdf2e};
-    //const wchar_t* skulls = L"\u2502 Hello! \u2502";
+int main()
+{
+
     setlocale(LC_ALL, "");
     int WINMAX_Y = 20;
     int WINMAX_X = 40;
     // after this point stdscr is now available as well as
-    //
     setup_screen();
     WINDOW* game_window = newwin(WINMAX_Y, WINMAX_X, 5, 5);
     nodelay(game_window, true);

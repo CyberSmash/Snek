@@ -30,7 +30,6 @@ extern const wchar_t* HEAD_TOP;
 extern const wchar_t* HEAD_RIGHT;
 extern const wchar_t* HEAD_BOTTOM;
 
-// TODO: Remove this and clean it up, maybe typedef out the std::list<std::shared_ptr<GameObject>>
 
 struct Segment
 {
@@ -46,7 +45,7 @@ public:
     Snake(WINDOW* win, int y, int x, int length, Direction startDirection);
 
     // Set and get the direction
-    void setDirection(Direction direction);
+    void setDirection(Direction newDirection);
     Direction getDirection();
 
     void Update() override;
@@ -63,6 +62,8 @@ public:
 
     void addSegments(int numSegments);
     bool Collider(std::shared_ptr<GameObject> other) override;
+
+    bool outOfBounds();
 private:
 
     bool DeathAnimation();
@@ -78,6 +79,7 @@ private:
     int                 length        {0};
     InputRouter         inputRouter   {};
     int                 segmentsToAdd {0};
+
 };
 
 

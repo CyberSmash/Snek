@@ -43,6 +43,9 @@ public:
     void                        RunGame();
     int                         numGameObjects();
     std::list<std::shared_ptr<GameObject>> FindAllByTag(Tag tag);
+
+    bool gameObjectAtLocation(int y, int x);
+
 protected:
 
     void processCollisions();
@@ -53,7 +56,7 @@ protected:
     GameState                           state       {GameState::BEGIN};
     std::list<shared_ptr<GameObject>>   gameObjects {};
     unique_ptr<InputRouter>             inputRouter {nullptr};
-
+    int                                 gameSleep   {200};
 
 };
 

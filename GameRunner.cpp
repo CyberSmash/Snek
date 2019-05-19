@@ -26,6 +26,9 @@ GameRunner::GameRunner(WINDOW * gameWindow) : GameObject(gameWindow, 0, 0)
 
     // Get any existing Food objects from the engine.
     food = gameEngine->FindGOByType<Food>();
+
+    input = std::make_unique<InputRouter>();
+    input->setWindow(stdscr);
 }
 
 
@@ -43,19 +46,33 @@ void GameRunner::Update()
     {
             addRandomFood();
     }
+    //input->checkInput();
+    int key = input->getInput();
+    if (key == 'f')
+    {
+        numFood += 1;
+    }
+
 
 }
 
-
+/**
+ * Add food to the game at a random location
+ *
+ * TODO: Could still put food on the tail of a snake.
+ */
 void GameRunner::addRandomFood()
 {
 
     int maxy = getmaxy(win);
     int maxx = getmaxx(win);
-
-    int y = std::clamp(rand() % maxy - 1, 1, maxy - 1);
-    int x = std::clamp(rand() % maxx - 1, 1, maxx - 1);
-
+    int y = 0;
+    int x = 0;
+    do {
+        // TODO: I'm Pretty sure this unfairly biases the lower number "1" because 0 is also 1 when clamped.
+        y = std::clamp(rand() % maxy - 1, 1, maxy - 1);
+        x = std::clamp(rand() % maxx - 1, 1, maxx - 1);
+    } while (gameEngine->gameObjectAtLocation(y, x));
     gameEngine->addGameObject(std::make_shared<Food>(win, y, x));
 
 }
@@ -119,4 +136,9 @@ void GameRunner::removePlayer(std::shared_ptr<Snake> const &player)
             return;
         }
     }
+}
+
+void GameRunner::setNumFood(unsigned int newNum)
+{
+    numFood = newNum;
 }

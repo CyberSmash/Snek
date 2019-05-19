@@ -72,10 +72,10 @@ Snake::Snake(WINDOW* win, int y, int x, int length, Direction startDirection) :
  *
  * @param direction The new direction.
  */
-void Snake::setDirection(Direction direction)
+void Snake::setDirection(Direction newDirection)
 {
-    this->oldDirection = this->direction;
-    this->direction = direction;
+    oldDirection = direction;
+    direction = newDirection;
 
 }
 
@@ -107,7 +107,7 @@ void Snake::Update()
         return;
     }
 
-    if (eatingSelf())
+    if (eatingSelf() || outOfBounds())
     {
         kill();
         return;
@@ -161,7 +161,7 @@ void Snake::Update()
     }
 
     segments.front().isHead = false;
-    // This is a super inneficient way of doing this. It would be better to go through and update
+    // This is a super inefficient way of doing this. It would be better to go through and update
     // each segments y,x values.
     segments.push_front(newHead);
     // Keep the same length, drop the last segment.
@@ -177,11 +177,27 @@ void Snake::Update()
     }
 }
 
+
+/**
+ * Get snake location x (column) value.
+ *
+ * @note: Always use this as opposed to the x value directly.
+ *
+ * @return The x locaton of the snake head.
+ */
 int Snake::getx()
 {
     return segments.front().x;
 }
 
+
+/**
+ * Get snake location y (row) value.
+ *
+ * @note: Always use this as opposed to the y value directly.
+ *
+ * @return The y location of the snake head.
+ */
 int Snake::gety()
 {
     return segments.front().y;
@@ -461,4 +477,17 @@ bool Snake::DeathAnimation()
         segments.pop_back();
     }
     return true;
+}
+
+
+/**
+ * Determine if the snake is out of bounds.
+ * @return True if we hit the wall, false otherwise.
+ */
+bool Snake::outOfBounds()
+{
+    int maxX = getmaxx(win);
+    int maxY   getmaxy(win);
+
+    return getx() <= 0 || getx() >= maxX - 1 || gety() <= 0 || gety() >= maxY - 1;
 }

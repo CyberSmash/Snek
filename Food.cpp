@@ -2,11 +2,12 @@
 // Created by jordan on 5/10/19.
 //
 
+//#define _XOPEN_SOURCE_EXTENDED
 #include "Food.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <memory>
-const wchar_t* FOOD_CHAR = L"@";
+const wchar_t* FOOD_CHAR = L"\u2638";
 
 Food::Food(WINDOW* foodwin, int y, int x) : GameObject(foodwin, y, x)
 {

@@ -26,7 +26,7 @@ public:
     void addPlayer(std::shared_ptr<Snake> player);
     void removePlayer(std::shared_ptr<Snake> const &player);
 
-
+    void setNumFood(unsigned int newNum);
 
 
 protected:
@@ -39,6 +39,7 @@ protected:
 
 private:
     void addRandomFood();
+    std::unique_ptr<InputRouter> input;
 };
 
 
