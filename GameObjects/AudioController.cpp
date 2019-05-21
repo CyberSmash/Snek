@@ -8,7 +8,7 @@
 
 AudioController::AudioController() : GameObject(nullptr, 0, 0)
 {
-
+    audioEngine->PlayMusic();
 }
 
 void AudioController::Update()
@@ -17,4 +17,9 @@ void AudioController::Update()
     {
         audioEngine->ToggleMusic();
     }
+}
+
+AudioController::~AudioController()
+{
+    audioEngine->StopMusic();
 }

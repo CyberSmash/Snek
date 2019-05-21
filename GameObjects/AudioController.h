@@ -10,7 +10,7 @@ class AudioController: public GameObject
 {
 public:
     AudioController();
-    ~AudioController() = default;
+    ~AudioController();
 
     void Update() override;
 };

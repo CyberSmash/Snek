@@ -39,11 +39,10 @@ int main()
 
     wclear(game_window);
 
-    gameEngine = std::make_shared<Engine>(game_window, 1);
+    gameEngine = std::make_shared<Engine>(game_window, 0);
     //audioEngine->PlayMusic();
-    std::shared_ptr<GameRunner> runner = std::make_shared<GameRunner>(game_window);
 
-    gameEngine->addGameObject(runner);
+
     gameEngine->MainLoop();
     //audioEngine->StopMusic();
     endwin();

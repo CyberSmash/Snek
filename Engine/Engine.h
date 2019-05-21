@@ -7,7 +7,8 @@
 
 #include <list>
 #include <memory>
-#include "ncurses.h"
+#include <ncurses.h>
+#include "Scene.h"
 #include "GameObjects/Snake.h"
 #include "GameObjects/Food.h"
 

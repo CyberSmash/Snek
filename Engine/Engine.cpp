@@ -57,7 +57,6 @@ void Engine::MainLoop()
 {
     // Do anything we need to, then end the game.
     int input = ERR;
-    audioEngine->PlayMusic();
     while(input != 'q')
     {
 
@@ -84,7 +83,6 @@ void Engine::MainLoop()
         // Sleep to provide a framerate.
 
     }
-    audioEngine->StopMusic();
     state = GameState::END;
 }
 
