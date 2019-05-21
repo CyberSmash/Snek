@@ -1,3 +1,10 @@
-+ Installed libsdl2 -- trying to get some audio.
-+ Check in the future for open video game audio samples.
-+ Check out: http://lazyfoo.net/SDL_tutorials/lesson11/index.php
++ Audio working need to expand to explosions
++ Found site http://lazyfoo.net/tutorials/SDL/21_sound_effects_and_music/index.php for SDL2 (as opposed to 1)
++ Found site https://www.zapsplat.com/sound-effect-category/electronica/ for music and effects.
++ Considering moving food
++ Considering different maps
++ Considering multiple snakes
++ Considering multiple snake colors
++ Need title and end screens.
++ Score board that flashes.
++ Simple AI for testing.
