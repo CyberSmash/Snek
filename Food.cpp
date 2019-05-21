@@ -4,6 +4,7 @@
 
 //#define _XOPEN_SOURCE_EXTENDED
 #include "Food.h"
+#include "AudioEngine.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <memory>
@@ -35,7 +36,13 @@ bool Food::Collider(std::shared_ptr<GameObject> other)
 {
     if (other->getTag() == Tag::PLAYER)
     {
+        audioEngine->PlaySound(AudioTag::EAT_FOOD);
         Destroy();
     }
     return true;
+}
+
+int Food::getSegmentValue()
+{
+    return segmentValue;
 }

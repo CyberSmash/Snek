@@ -16,8 +16,10 @@ public:
     void Update() override;
     void Draw() override;
     bool Collider(std::shared_ptr<GameObject> other) override;
+    int getSegmentValue();
+
 protected:
-    int segment_value = 1;
+    int segmentValue = 5;
 private:
 
 

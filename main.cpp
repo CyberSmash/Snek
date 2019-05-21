@@ -10,6 +10,7 @@
 #include <time.h>
 #include "Engine.h"
 #include "GameRunner.h"
+#include "AudioEngine.h"
 #include <memory>
 
 #define Y 0
@@ -39,12 +40,12 @@ int main()
     wclear(game_window);
 
     gameEngine = std::make_shared<Engine>(game_window, 1);
-
+    //audioEngine->PlayMusic();
     std::shared_ptr<GameRunner> runner = std::make_shared<GameRunner>(game_window);
 
     gameEngine->addGameObject(runner);
     gameEngine->MainLoop();
-
+    //audioEngine->StopMusic();
     endwin();
     return 0;
 }

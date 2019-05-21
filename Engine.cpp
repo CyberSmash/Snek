@@ -8,7 +8,7 @@
 #include <chrono>
 #include "Engine.h"
 #include "EngineUtils.h"
-
+#include "AudioEngine.h"
 
 /**
  * Default constructor.
@@ -58,7 +58,7 @@ void Engine::MainLoop()
 {
     // Do anything we need to, then end the game.
     int input = ERR;
-
+    audioEngine->PlayMusic();
     while(input != 'q')
     {
 
@@ -85,6 +85,7 @@ void Engine::MainLoop()
         // Sleep to provide a framerate.
 
     }
+    audioEngine->StopMusic();
     state = GameState::END;
 }
 
@@ -97,6 +98,11 @@ void Engine::End()
     // TODO: Should we go back to Engine::Begin?
 }
 
+
+int Engine::getInput()
+{
+    return inputRouter->getInput();
+}
 
 /**
  * Determine if there is a collision, and if there is, execute each game object's collider action.

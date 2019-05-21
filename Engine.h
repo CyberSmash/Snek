@@ -42,6 +42,7 @@ public:
     void                        addGameObject(shared_ptr<GameObject> go);
     void                        RunGame();
     int                         numGameObjects();
+    int                         getInput();
     std::list<std::shared_ptr<GameObject>> FindAllByTag(Tag tag);
 
     bool gameObjectAtLocation(int y, int x);

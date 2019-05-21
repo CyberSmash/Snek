@@ -9,6 +9,8 @@
 #include "GameRunner.h"
 #include "Engine.h"
 #include "Tag.h"
+#include "AudioEngine.h"
+#include "AudioController.h"
 
 /**
  * Constructor
@@ -18,9 +20,16 @@
  */
 GameRunner::GameRunner(WINDOW * gameWindow) : GameObject(gameWindow, 0, 0)
 {
+
+
+
     // TODO: Does it matter if I ever replace this with something that's actually random? Probably not.
     srand(time(nullptr));
+
     // Get our player objects from the game engine.
+    // Add our audio controller.
+    gameEngine->addGameObject(std::make_shared<AudioController>());
+
     // TODO: Doing this once isn't that bad on the engine. However, maybe we should search by tag.
     players = gameEngine->FindGOByType<Snake>();
 
@@ -29,6 +38,9 @@ GameRunner::GameRunner(WINDOW * gameWindow) : GameObject(gameWindow, 0, 0)
 
     input = std::make_unique<InputRouter>();
     input->setWindow(stdscr);
+
+
+
 }
 
 

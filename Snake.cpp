@@ -4,6 +4,7 @@
 
 #include "Snake.h"
 #include "Tag.h"
+#include "Engine.h"
 
 //#define HEAD_CHAR L'@'
 //#define SEGMENT_CHAR L'm'
@@ -118,7 +119,7 @@ void Snake::Update()
             .isHead = true, // Currently Unused.
             .y = oldHead.y,
             .x = oldHead.x,
-            .draw_chr = HORIZONTAL, // Currently unused.
+            .draw_chr = HORIZONTAL,
     };
 
     switch(direction)
@@ -257,9 +258,9 @@ void Snake::kill()
  */
 int Snake::processInput()
 {
-    int input = inputRouter.getInput();
+    int input = gameEngine->getInput();
 
-    // TODO: Does a switch statement really still make sense here? Maybe a carefull crafted if.
+    // TODO: Does a switch statement really still make sense here? Maybe a carefully crafted if.
     switch(input)
     {
         case ERR:
@@ -302,7 +303,7 @@ int Snake::processInput()
 
 void Snake::addSegments(int numSegments)
 {
-    segmentsToAdd = numSegments;
+    segmentsToAdd += numSegments;
 }
 
 /**
@@ -417,7 +418,13 @@ bool Snake::Collider(std::shared_ptr<GameObject> other)
     // TODO: Determine what happens if we hit another snake.
     if (other->getTag() == Tag::FOOD )
     {
-        addSegments(1);
+        // Now we will want to convert.
+        std::shared_ptr<Food> tmp = std::dynamic_pointer_cast<Food>(other);
+        if (tmp == nullptr)
+        {
+            return false;
+        }
+        addSegments(tmp->getSegmentValue());
     }
 
     return false;
