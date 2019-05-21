@@ -6,7 +6,7 @@
 #define SNEK_DEFNS_H
 
 #include <memory>
-#include "GameObject.h"
+#include "GameObjects/GameObject.h"
 
 // Easily remember if Y comes first or X comes first, also helps
 // when indexing into a tuple.

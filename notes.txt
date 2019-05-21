@@ -8,3 +8,6 @@
 + Need title and end screens.
 + Score board that flashes.
 + Simple AI for testing.
++ Get rid of Input Router
++ clean up defns.h decide how to handle it.
++ Fix audio file locations. Can those be made into resources?

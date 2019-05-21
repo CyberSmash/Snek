@@ -3,14 +3,14 @@
 #include <locale.h>
 #include <chrono>
 #include <thread>
-#include "Snake.h"
-#include "InputRouter.h"
-#include "Food.h"
+#include "GameObjects/Snake.h"
+#include "Engine/InputRouter.h"
+#include "GameObjects/Food.h"
 #include <random>
 #include <time.h>
-#include "Engine.h"
-#include "GameRunner.h"
-#include "AudioEngine.h"
+#include "Engine/Engine.h"
+#include "GameObjects/GameRunner.h"
+#include "Engine/AudioEngine.h"
 #include <memory>
 
 #define Y 0

@@ -4,7 +4,7 @@
 
 //#define _XOPEN_SOURCE_EXTENDED
 #include "Food.h"
-#include "AudioEngine.h"
+#include "Engine/AudioEngine.h"
 #include <ncurses.h>
 #include <stdio.h>
 #include <memory>

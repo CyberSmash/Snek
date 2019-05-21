@@ -4,11 +4,13 @@
 
 #ifndef SNEK_ENGINE_H
 #define SNEK_ENGINE_H
-#include "ncurses.h"
-#include "Snake.h"
-#include "Food.h"
+
 #include <list>
 #include <memory>
+#include "ncurses.h"
+#include "GameObjects/Snake.h"
+#include "GameObjects/Food.h"
+
 using std::shared_ptr;
 using std::unique_ptr;
 

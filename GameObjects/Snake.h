@@ -6,7 +6,7 @@
 #define SNEK_SNAKE_H
 
 #include "GameObject.h"
-#include "InputRouter.h"
+#include "Engine/InputRouter.h"
 #include "defns.h"
 #include <list>
 

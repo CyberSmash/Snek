@@ -3,8 +3,8 @@
 //
 
 #include "Snake.h"
-#include "Tag.h"
-#include "Engine.h"
+#include "Engine/Tag.h"
+#include "Engine/Engine.h"
 
 //#define HEAD_CHAR L'@'
 //#define SEGMENT_CHAR L'm'

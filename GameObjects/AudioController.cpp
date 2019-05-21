@@ -3,8 +3,8 @@
 //
 
 #include "AudioController.h"
-#include "AudioEngine.h"
-#include "Engine.h"
+#include "Engine/AudioEngine.h"
+#include "Engine/Engine.h"
 
 AudioController::AudioController() : GameObject(nullptr, 0, 0)
 {

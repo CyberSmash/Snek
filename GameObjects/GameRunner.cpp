@@ -7,9 +7,9 @@
 #include <ncurses.h>
 #include <algorithm>
 #include "GameRunner.h"
-#include "Engine.h"
-#include "Tag.h"
-#include "AudioEngine.h"
+#include "Engine/Engine.h"
+#include "Engine/Tag.h"
+#include "Engine/AudioEngine.h"
 #include "AudioController.h"
 
 /**
@@ -20,9 +20,6 @@
  */
 GameRunner::GameRunner(WINDOW * gameWindow) : GameObject(gameWindow, 0, 0)
 {
-
-
-
     // TODO: Does it matter if I ever replace this with something that's actually random? Probably not.
     srand(time(nullptr));
 
