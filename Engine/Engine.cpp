@@ -8,6 +8,7 @@
 #include <chrono>
 #include "Engine.h"
 #include "AudioEngine.h"
+#include "Scenes/MainGameScene.h"
 
 /**
  * Default constructor.
@@ -22,19 +23,19 @@ Engine::Engine() : numPlayers(0), win(nullptr)
  * @param gameWindow The game window we will be drawing to.
  * @param players The number of players.
  */
-Engine::Engine(WINDOW *gameWindow, int players) : numPlayers(players), win(gameWindow)
+Engine::Engine(WINDOW *gameWindow, int players) : win(gameWindow)
 {
     inputRouter = std::make_unique<InputRouter>();
     inputRouter->setWindow(stdscr);
+    scenes.emplace_back(std::make_shared<MainGameScene>("gameScene"));
+    currentScene = 0;
+    scenes[currentScene]->LoadScene(win);
     if (numPlayers == 0)
     {
         return;
     }
-    for (int i = 0; i < numPlayers; i++)
-    {
-        // TODO: Change start location and size.
-        gameObjects.emplace_back(std::make_shared<Snake>(win, 5, 5, 5, Direction::RIGHT));
-    }
+
+
 }
 
 
@@ -65,7 +66,7 @@ void Engine::MainLoop()
         input = inputRouter->getInput();
         box(win, 0, 0);
 
-        for (shared_ptr<GameObject> go : gameObjects)
+        for (shared_ptr<GameObject> const &go : scenes[currentScene]->getGameObjects())
         {
             // Move the game forward
             go->Update();
@@ -111,6 +112,7 @@ void Engine::processCollisions()
     // auto x - Works with copies
     // auto &x - Work with original, but I might make changes
     // auto const &x - Work with original, with no changes.
+    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
     for (auto const &go : gameObjects)
     {
         for ( auto const &other : gameObjects)
@@ -140,6 +142,7 @@ void Engine::processCollisions()
  */
 void Engine::processDestroyed()
 {
+    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
     for (auto it = gameObjects.begin(); it != gameObjects.end();)
     {
         shared_ptr<GameObject> tmp = *it;
@@ -188,7 +191,7 @@ void Engine::addGameObject(shared_ptr<GameObject> go)
     {
         return;
     }
-
+    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
     auto it = std::find(std::begin(gameObjects), std::end(gameObjects), go);
     if (it != std::end(gameObjects))
     {
@@ -197,7 +200,7 @@ void Engine::addGameObject(shared_ptr<GameObject> go)
         return;
     }
 
-    gameObjects.emplace_back(go);
+    scenes[currentScene]->addGameObject(go);
 }
 
 
@@ -207,7 +210,7 @@ void Engine::addGameObject(shared_ptr<GameObject> go)
  */
 int Engine::numGameObjects()
 {
-    return gameObjects.size();
+    return scenes[currentScene]->getGameObjects().size();
 }
 
 
@@ -250,6 +253,7 @@ template<typename T>
 std::list<shared_ptr<T>> Engine::FindGOByType()
 {
     std::list<shared_ptr<T>> l;
+    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
     // I could use auto here. However, I don't like doing that unless the type is
     // difficult to predict (such as with iterators) or if the actual type isn't somewhere
     // nearby.
@@ -277,6 +281,7 @@ std::list<shared_ptr<T>> Engine::FindGOByType()
 std::list<std::shared_ptr<GameObject>> Engine::FindAllByTag(Tag tag)
 {
     std::list<std::shared_ptr<GameObject>> matches;
+    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
     for (auto const &go : gameObjects)
     {
         if (go->getTag() == tag)
@@ -300,6 +305,7 @@ std::list<std::shared_ptr<GameObject>> Engine::FindAllByTag(Tag tag)
  */
 bool Engine::gameObjectAtLocation(int y, int x)
 {
+    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
     for (auto const &go : gameObjects)
     {
         if (go->getx() == x && go->gety() == y)

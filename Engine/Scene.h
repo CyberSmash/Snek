@@ -18,6 +18,7 @@ public:
     virtual void LoadScene(WINDOW* window) = 0;
     virtual void UnloadScene() = 0;
     std::list<std::shared_ptr<GameObject>> getGameObjects();
+    void addGameObject(std::shared_ptr<GameObject> gameObject);
     std::string getName();
 
 protected:

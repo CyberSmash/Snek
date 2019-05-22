@@ -55,12 +55,14 @@ protected:
     void processCollisions();
     void processDestroyed();
 
-    int                                 numPlayers  {0};
-    WINDOW*                             win         {nullptr};
-    GameState                           state       {GameState::BEGIN};
-    std::list<shared_ptr<GameObject>>   gameObjects {};
-    unique_ptr<InputRouter>             inputRouter {nullptr};
-    int                                 gameSleep   {200};
+    int                                     numPlayers  {0};
+    WINDOW*                                 win         {nullptr};
+    GameState                               state       {GameState::BEGIN};
+    //std::list<shared_ptr<GameObject>>     gameObjects {};
+    std::vector<std::shared_ptr<Scene>>     scenes      {};
+    unique_ptr<InputRouter>                 inputRouter {nullptr};
+    int                                     gameSleep   {200};
+    int                                     currentScene {0};
 
 };
 

@@ -4,7 +4,7 @@
 
 #include "Scene.h"
 
-Scene::Scene(std::string sceneName) : name(sceneName)
+Scene::Scene(std::string sceneName) : name(std::move(sceneName))
 {
 
 }
@@ -17,4 +17,9 @@ std::string Scene::getName()
 std::list<std::shared_ptr<GameObject>> Scene::getGameObjects()
 {
     return gameObjects;
+}
+
+void Scene::addGameObject(std::shared_ptr<GameObject> gameObject)
+{
+    gameObjects.emplace_back(gameObject);
 }

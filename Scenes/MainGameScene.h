@@ -13,7 +13,7 @@
 #include "GameObjects/AudioController.h"
 #include "GameObjects/GameRunner.h"
 
-class MainGameScene : Scene
+class MainGameScene : public Scene
 {
 public:
     MainGameScene(std::string sceneName);
