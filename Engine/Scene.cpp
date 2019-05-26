@@ -23,3 +23,34 @@ void Scene::addGameObject(std::shared_ptr<GameObject> gameObject)
 {
     gameObjects.emplace_back(gameObject);
 }
+
+
+void Scene::removeDestroyed()
+{
+    for (auto it = gameObjects.begin(); it != gameObjects.end();)
+    {
+        std::shared_ptr<GameObject> tmp = *it;
+        if (tmp->isDestroyed())
+        {
+            it = gameObjects.erase(it);
+            continue;
+        }
+        it++;
+    }
+}
+
+void Scene::clearWindows()
+{
+    for (auto window : windows)
+    {
+        werase(window);
+    }
+}
+
+void Scene::refreshWindows()
+{
+    for (auto window : windows)
+    {
+        wrefresh(window);
+    }
+}

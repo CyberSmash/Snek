@@ -4,10 +4,16 @@
 
 #ifndef SNEK_LOGO_H
 #define SNEK_LOGO_H
+#include "GameObject.h"
 
-
-class Logo
+extern const wchar_t* snek_logo[];
+extern int snek_logo_size;
+class Logo : public GameObject
 {
+public:
+    Logo(WINDOW* gameWin, int y, int x);
+    void Draw() override;
+private:
 
 };
 

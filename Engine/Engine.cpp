@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <thread>
 #include <chrono>
+#include "Scenes/TitleScreen.h"
 #include "Engine.h"
 #include "AudioEngine.h"
 #include "Scenes/MainGameScene.h"
@@ -13,7 +14,7 @@
 /**
  * Default constructor.
  */
-Engine::Engine() : numPlayers(0), win(nullptr)
+Engine::Engine() : numPlayers(0)
 {
 }
 
@@ -23,13 +24,15 @@ Engine::Engine() : numPlayers(0), win(nullptr)
  * @param gameWindow The game window we will be drawing to.
  * @param players The number of players.
  */
-Engine::Engine(WINDOW *gameWindow, int players) : win(gameWindow)
+Engine::Engine(int players)
 {
     inputRouter = std::make_unique<InputRouter>();
     inputRouter->setWindow(stdscr);
+
+    scenes.emplace_back(std::make_shared<TitleScreen>("titleScreen"));
     scenes.emplace_back(std::make_shared<MainGameScene>("gameScene"));
     currentScene = 0;
-    scenes[currentScene]->LoadScene(win);
+    scenes[currentScene]->LoadScene();
     if (numPlayers == 0)
     {
         return;
@@ -58,13 +61,17 @@ void Engine::MainLoop()
 {
     // Do anything we need to, then end the game.
     int input = ERR;
-    while(input != 'q')
+    while(input != 'q' && !shouldQuit)
     {
-
-        werase(win);
+        // First check if we should change the scene. This prevents any
+        // temporaries from becoming destroyed during an update or draw.
+        if (shouldChangeScene)
+        {
+            internalChangeScene();
+        }
+        scenes[currentScene]->clearWindows();
         inputRouter->checkInput();
         input = inputRouter->getInput();
-        box(win, 0, 0);
 
         for (shared_ptr<GameObject> const &go : scenes[currentScene]->getGameObjects())
         {
@@ -78,11 +85,9 @@ void Engine::MainLoop()
         processCollisions();
         processDestroyed();
 
-        wrefresh(win);
-        std::this_thread::sleep_for(std::chrono::milliseconds(gameSleep));
-
+        scenes[currentScene]->refreshWindows();
         // Sleep to provide a framerate.
-
+        std::this_thread::sleep_for(std::chrono::milliseconds(gameSleep));
     }
     state = GameState::END;
 }
@@ -142,17 +147,7 @@ void Engine::processCollisions()
  */
 void Engine::processDestroyed()
 {
-    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
-    for (auto it = gameObjects.begin(); it != gameObjects.end();)
-    {
-        shared_ptr<GameObject> tmp = *it;
-        if (tmp->isDestroyed())
-        {
-            it = gameObjects.erase(it);
-            continue;
-        }
-        it++;
-    }
+    scenes[currentScene]->removeDestroyed();
 }
 
 
@@ -222,7 +217,7 @@ bool Engine::areAnyDead()
 {
 
     std::list<shared_ptr<Snake>> snakes = FindGOByType<Snake>();
-    for (auto snake : snakes)
+    for (auto const &snake : snakes)
     {
         if (snake->isDead())
         {
@@ -315,6 +310,51 @@ bool Engine::gameObjectAtLocation(int y, int x)
     }
 
     return false;
+}
+
+void Engine::changeScene(int newScene)
+{
+    if (newScene > static_cast<int>(scenes.size()) - 1)
+    {
+        return;
+    }
+    shouldChangeScene = true;
+    requestedSceneChange = newScene;
+
+}
+
+void Engine::internalChangeScene()
+{
+    int maxScenes = static_cast<int>(scenes.size()) - 1;
+    int minScenes = 0;
+
+
+    if (requestedSceneChange >= minScenes && requestedSceneChange <= maxScenes)
+    {
+        scenes[currentScene]->UnloadScene();
+        currentScene = requestedSceneChange;
+        scenes[currentScene]->LoadScene();
+    }
+
+    shouldChangeScene = false;
+    requestedSceneChange = -1;
+}
+
+void Engine::changeScene(std::string sceneName)
+{
+
+    for (unsigned int i = 0; i < scenes.size(); i++)
+    {
+        if (scenes[i]->getName() == sceneName)
+        {
+            changeScene(i);
+        }
+    }
+}
+
+void Engine::quit()
+{
+    shouldQuit = true;
 }
 
 /**

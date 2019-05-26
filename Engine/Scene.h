@@ -15,15 +15,19 @@ class Scene
 {
 public:
     Scene(std::string sceneName);
-    virtual void LoadScene(WINDOW* window) = 0;
+    virtual void LoadScene() = 0;
     virtual void UnloadScene() = 0;
     std::list<std::shared_ptr<GameObject>> getGameObjects();
     void addGameObject(std::shared_ptr<GameObject> gameObject);
+    void removeDestroyed();
     std::string getName();
+    void clearWindows();
+    void refreshWindows();
 
 protected:
     std::list<std::shared_ptr<GameObject>> gameObjects;
     std::string name;
+    std::vector<WINDOW*> windows;
 
 };
 

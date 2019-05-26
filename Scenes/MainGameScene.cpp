@@ -6,13 +6,15 @@
 
 MainGameScene::MainGameScene(std::string sceneName) : Scene(std::move(sceneName))
 {
-
+    windows.emplace_back(newwin(20, 40, 5, 5));
 }
 
-void MainGameScene::LoadScene(WINDOW *win)
+void MainGameScene::LoadScene()
 {
-    gameObjects.emplace_back(std::make_shared<GameRunner>(win));
-    gameObjects.emplace_back(std::make_shared<Snake>(win, 5, 5, 5, Direction::RIGHT));
+    wclear(stdscr);
+    wclear(windows[WINDOW_TAG::GAME_AREA]);
+    gameObjects.emplace_back(std::make_shared<GameRunner>(windows[WINDOW_TAG::GAME_AREA]));
+    gameObjects.emplace_back(std::make_shared<Snake>(windows[WINDOW_TAG::GAME_AREA], 5, 5, 5, Direction::RIGHT));
     gameObjects.emplace_back(std::make_shared<AudioController>());
 }
 

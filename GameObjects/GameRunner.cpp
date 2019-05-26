@@ -76,7 +76,7 @@ void GameRunner::addRandomFood()
  */
 void GameRunner::Draw()
 {
-    // This object will not be drawn, it just controls our game state.
+    box(win, 0, 0);
 }
 
 

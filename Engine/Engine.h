@@ -29,7 +29,7 @@ public:
 
     /* Constructors */
     Engine();
-    Engine(WINDOW* gameWindow, int players);
+    Engine(int players);
 
     /* Game Loops */
     void Begin();
@@ -42,6 +42,9 @@ public:
     template <typename T>
     std::list<shared_ptr<T>>    FindGOByType();
     bool                        areAnyDead();
+    void                        changeScene(int newScene);
+    void                        changeScene(std::string sceneName);
+    void                        quit();
     void                        addGameObject(shared_ptr<GameObject> go);
     void                        RunGame();
     int                         numGameObjects();
@@ -54,15 +57,21 @@ protected:
 
     void processCollisions();
     void processDestroyed();
+    void internalChangeScene();
 
-    int                                     numPlayers  {0};
-    WINDOW*                                 win         {nullptr};
-    GameState                               state       {GameState::BEGIN};
-    //std::list<shared_ptr<GameObject>>     gameObjects {};
-    std::vector<std::shared_ptr<Scene>>     scenes      {};
-    unique_ptr<InputRouter>                 inputRouter {nullptr};
-    int                                     gameSleep   {200};
-    int                                     currentScene {0};
+
+
+    int                                     numPlayers      {0};
+    //WINDOW*                                 win           {nullptr};
+    GameState                               state           {GameState::BEGIN};
+    //std::list<shared_ptr<GameObject>>     gameObjects     {};
+    std::vector<std::shared_ptr<Scene>>     scenes          {};
+    unique_ptr<InputRouter>                 inputRouter     {nullptr};
+    int                                     gameSleep       {200};
+    int                                     currentScene    {0};
+    bool                                    shouldQuit      {false};
+    bool                                    shouldChangeScene {false};
+    int                                     requestedSceneChange {0};
 
 };
 

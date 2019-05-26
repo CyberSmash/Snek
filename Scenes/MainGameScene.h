@@ -15,9 +15,14 @@
 
 class MainGameScene : public Scene
 {
+
 public:
+    enum WINDOW_TAG
+    {
+        GAME_AREA,
+    };
     MainGameScene(std::string sceneName);
-    void LoadScene(WINDOW* win) override;
+    void LoadScene() override;
     void UnloadScene() override;
 private:
 
