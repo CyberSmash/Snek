@@ -3,10 +3,14 @@
 //
 
 #include "MainGameScene.h"
-
+#define SCREEN_TOTAL_X 80
+#define SCREEN_TOTAL_Y 40
 MainGameScene::MainGameScene(std::string sceneName) : Scene(std::move(sceneName))
 {
-    windows.emplace_back(newwin(20, 40, 5, 5));
+
+    int start_draw_x = (getmaxx(stdscr) / 2) - (SCREEN_TOTAL_X / 2);
+    int start_draw_y = (getmaxy(stdscr) / 2) - (SCREEN_TOTAL_Y / 2);
+    windows.emplace_back(newwin(40, 80, start_draw_y, start_draw_x));
 }
 
 void MainGameScene::LoadScene()

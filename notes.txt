@@ -6,8 +6,12 @@
 + Considering multiple snakes
 + Considering multiple snake colors
 + Need title and end screens.
+	+ Title screen now exists.
+	- Need to check screen requirements and such.
 + Score board that flashes.
-+ Simple AI for testing.
 + Get rid of Input Router
+	- Almost done, nearly everything relies on gameEngine->getInput().
 + clean up defns.h decide how to handle it.
 + Fix audio file locations. Can those be made into resources?
++ AI Now exists
+	- It sucks, could do better by recursing different "moves".

@@ -55,6 +55,13 @@ std::shared_ptr<GameObject> AISnake::findClosest(std::list<std::shared_ptr<GameO
     return selectedObject;
 }
 
+/**
+ * Main logic for the AI
+ *
+ * Honestly this could usea lot of work. I've got a weird concept in here about avoiding concave situations,
+ * where the snake is likely to wrap around on it self. Honestly, with a little math and some recursion I could
+ * more easily look X number of turns ahead and avoid turns that quickly run out of room.
+ */
 void AISnake::pickDirection()
 {
     std::list<std::shared_ptr<GameObject>> food_game_objects = gameEngine->FindAllByTag(Tag::FOOD);
@@ -136,6 +143,7 @@ void AISnake::pickDirection()
     setDirection(possibleDirections.front());
 
 }
+
 
 /**
  * Attempt to calculate a desireable direction that we would want to move in if we could

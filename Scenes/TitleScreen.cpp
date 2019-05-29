@@ -9,11 +9,19 @@
 #include "GameObjects/Utils.h"
 #include "GameObjects/TitleScreenMenu.h"
 
+#define MAX_TOTAL_X 80
+#define MAX_TOTAL_Y 40
+
 TitleScreen::TitleScreen(std::string sceneName) : Scene(std::move(sceneName))
 {
-    int     logo_win_height = getmaxy(stdscr) * 0.66;
-    WINDOW* logo_window     = newwin(logo_win_height, getmaxx(stdscr), 0, 0);
-    WINDOW* menu_window     = newwin(getmaxy(stdscr) * 0.33, getmaxx(stdscr), logo_win_height + 1, 0);
+
+    int     logo_win_height     = MAX_TOTAL_Y * 0.66;
+    int     windows_start_draw  = (getmaxx(stdscr) / 2) - (MAX_TOTAL_X / 2);
+    int     menu_win_height     = MAX_TOTAL_Y * 0.33;
+    int     windows_y_start_draw = (getmaxy(stdscr) / 2) - (logo_win_height + menu_win_height)  / 2;
+
+    WINDOW* logo_window     = newwin(logo_win_height, MAX_TOTAL_X, windows_y_start_draw, windows_start_draw);
+    WINDOW* menu_window     = newwin(menu_win_height, MAX_TOTAL_X, windows_y_start_draw + getmaxy(logo_window) + 1, windows_start_draw);
 
     init_pair(0, COLOR_WHITE, COLOR_BLACK);
     init_pair(1, COLOR_BLACK, COLOR_WHITE);
