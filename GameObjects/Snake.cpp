@@ -61,6 +61,9 @@ Snake::Snake(WINDOW* win, int y, int x, int length, Direction startDirection) :
                 seg.y = y;
                 seg.x = x + i;
                 break;
+            case Direction::NONE:
+                throw std::runtime_error("Cannot have a direction of Direction::NONE.");
+                break;
         }
 
         seg.draw_chr = pickSegmentCharacter();
@@ -116,7 +119,7 @@ void Snake::Update()
     processInput();
     struct Segment oldHead = segments.front();
     Segment newHead = {
-            .isHead = true, // Currently Unused.
+            .isHead = true,
             .y = oldHead.y,
             .x = oldHead.x,
             .draw_chr = HORIZONTAL,

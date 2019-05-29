@@ -64,7 +64,7 @@ public:
     bool Collider(std::shared_ptr<GameObject> other) override;
 
     bool outOfBounds();
-private:
+protected:
 
     bool DeathAnimation();
     bool eatingSelf();

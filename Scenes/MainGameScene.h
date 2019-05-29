@@ -12,7 +12,7 @@
 #include "GameObjects/Food.h"
 #include "GameObjects/AudioController.h"
 #include "GameObjects/GameRunner.h"
-
+#include "GameObjects/AISnake.h"
 class MainGameScene : public Scene
 {
 

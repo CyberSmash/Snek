@@ -19,6 +19,7 @@ enum class Direction
     RIGHT   = 1,
     DOWN    = 2,
     LEFT    = 3,
+    NONE    = 4,
 };
 
 #endif //SNEK_DEFNS_H
