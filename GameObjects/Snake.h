@@ -9,6 +9,7 @@
 #include "Engine/InputRouter.h"
 #include "defns.h"
 #include <list>
+#include <deque>
 
 
 /**
@@ -33,10 +34,11 @@ extern const wchar_t* HEAD_BOTTOM;
 
 struct Segment
 {
-    bool isHead {false};
-    int y {0};
-    int x {0};
-    const wchar_t* draw_chr {HEAD_BOTTOM};
+    bool            isHead      {false};
+    int             y           {0};
+    int             x           {0};
+    const wchar_t*  draw_chr    {HEAD_BOTTOM};
+    Direction       direction   {Direction::RIGHT};
 };
 
 class Snake : public GameObject
@@ -64,6 +66,9 @@ public:
     bool Collider(std::shared_ptr<GameObject> other) override;
 
     bool outOfBounds();
+
+    void advanceSnake();
+
 protected:
 
     bool DeathAnimation();
@@ -72,7 +77,7 @@ protected:
     const wchar_t* pickSegmentCharacter();
     const wchar_t* pickHeadCharacter();
 
-    std::list<Segment>  segments      {};
+    std::deque<Segment> segments      {};
     Direction           direction     {Direction::UP};
     Direction           oldDirection  {Direction::UP};
     bool                dead          {false};

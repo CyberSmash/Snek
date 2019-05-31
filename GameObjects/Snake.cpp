@@ -40,6 +40,7 @@ Snake::Snake(WINDOW* win, int y, int x, int length, Direction startDirection) :
             seg.draw_chr = pickHeadCharacter();
             seg.y = y;
             seg.x = x;
+            seg.direction = startDirection;
             segments.push_back(seg);
             continue;
         }
@@ -117,68 +118,8 @@ void Snake::Update()
         return;
     }
     processInput();
-    struct Segment oldHead = segments.front();
-    Segment newHead = {
-            .isHead = true,
-            .y = oldHead.y,
-            .x = oldHead.x,
-            .draw_chr = HORIZONTAL,
-    };
+    advanceSnake();
 
-    switch(direction)
-    {
-        case Direction::RIGHT:
-            newHead.x += 1;
-            newHead.draw_chr = pickHeadCharacter();
-            break;
-        case Direction::LEFT:
-            newHead.x -= 1;
-            newHead.draw_chr = pickHeadCharacter();
-            break;
-        case Direction::UP:
-            newHead.y -= 1;
-            newHead.draw_chr = pickHeadCharacter();
-            break;
-        case Direction::DOWN:
-            newHead.y += 1;
-            newHead.draw_chr = pickHeadCharacter();
-            break;
-        default:
-            break;
-    }
-    if (direction != oldDirection)
-    {
-        // Get the first in the list, change its draw chr. appropriately.
-        segments.front().draw_chr = pickSegmentCharacter();
-    }
-    else
-    {
-        if (direction == Direction::LEFT || direction == Direction::RIGHT)
-        {
-            segments.front().draw_chr = HORIZONTAL;
-        }
-        if (direction == Direction::UP || direction == Direction::DOWN)
-        {
-            segments.front().draw_chr = VERTICAL;
-        }
-
-    }
-
-    segments.front().isHead = false;
-    // This is a super inefficient way of doing this. It would be better to go through and update
-    // each segments y,x values.
-    segments.push_front(newHead);
-    // Keep the same length, drop the last segment.
-    // TODO: This will need to check for a food item, if that's the case,
-    // we'll need to not drop the back segment, but let it stay for a single update.
-    if (segmentsToAdd <= 0)
-    {
-        segments.pop_back();
-    }
-    else
-    {
-        segmentsToAdd--;
-    }
 }
 
 
@@ -500,4 +441,78 @@ bool Snake::outOfBounds()
     int maxY   getmaxy(win);
 
     return getx() <= 0 || getx() >= maxX - 1 || gety() <= 0 || gety() >= maxY - 1;
+}
+
+/**
+ * Advance the snake in place.
+ *
+ * This algorithm should be faster than adding and deleting segements as we go along (the old way). Instead,
+ * we go through each segment, backwards in the list, and replace the current segment with the next segment's
+ * information. This may cause more copies, but it creates far less heap memory allocations which I believe would
+ * take longer.
+ */
+void Snake::advanceSnake()
+{
+    if (segmentsToAdd > 0)
+    {
+        // We have eaten a food, we now want to increase our tail one step at a time.
+        Segment seg = segments.back();
+        segments.push_back(seg);
+        segmentsToAdd--;
+    }
+    for (auto seg_it = segments.rbegin(); seg_it != segments.rend(); seg_it++)
+    {
+
+        if (seg_it->isHead)
+        {
+            // seg_it is the head.
+            switch(direction)
+            {
+                case Direction::RIGHT:
+                    seg_it->x += 1;
+                    seg_it->draw_chr = pickHeadCharacter();
+                    break;
+                case Direction::LEFT:
+                    seg_it->x -= 1;
+                    seg_it->draw_chr = pickHeadCharacter();
+                    break;
+                case Direction::UP:
+                    seg_it->y -= 1;
+                    seg_it->draw_chr = pickHeadCharacter();
+                    break;
+                case Direction::DOWN:
+                    seg_it->y += 1;
+                    seg_it->draw_chr = pickHeadCharacter();
+                    break;
+                default:
+                    break;
+            }
+
+            continue;
+        }
+
+        // Copy the next segment into the current segment.
+        Segment next = *(seg_it+1);
+        *seg_it = next;
+        if (next.isHead)
+        {
+            seg_it->isHead = false;
+            if (oldDirection != direction)
+            {
+                seg_it->draw_chr = pickSegmentCharacter();
+            }
+            else
+            {
+                if (direction == Direction::LEFT || direction == Direction::RIGHT)
+                {
+                    seg_it->draw_chr = HORIZONTAL;
+                }
+                if (direction == Direction::UP || direction == Direction::DOWN)
+                {
+                    seg_it->draw_chr = VERTICAL;
+                }
+            }
+        }
+
+    }
 }
