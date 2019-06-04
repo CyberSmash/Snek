@@ -5,15 +5,15 @@
 + Considering different maps
 + Considering multiple snakes
 + Considering multiple snake colors
-+ Need scoreboard
-	- Implemented a score, needs to flash, and be better.
++ Options menu.
++ Need high score?
 + Need in-game menu or some sort of controls explination.
 + Need title and end screens.
 	+ Title screen now exists.
 	- Need to check screen requirements and such.
-+ Score board that flashes.
 + Get rid of Input Router
 	- Almost done, nearly everything relies on gameEngine->getInput().
+	+ ...or should I? hehehe.
 + clean up defns.h decide how to handle it.
 + Fix audio file locations. Can those be made into resources?
 + AI Now exists
