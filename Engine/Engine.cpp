@@ -334,6 +334,13 @@ void Engine::internalChangeScene()
         scenes[currentScene]->UnloadScene();
         currentScene = requestedSceneChange;
         scenes[currentScene]->LoadScene();
+
+        // Now for each object in the scene, call the start function so they can set up.
+        for(std::shared_ptr<GameObject> gameObject : scenes[currentScene]->getGameObjects())
+        {
+            gameObject->Start();
+        }
+
     }
 
     shouldChangeScene = false;
@@ -369,5 +376,6 @@ std::shared_ptr<Engine> gameEngine;
 template class std::list<shared_ptr<GameObject>> Engine::FindGOByType<GameObject>();
 template class std::list<shared_ptr<Snake>> Engine::FindGOByType<Snake>();
 template class std::list<shared_ptr<Food>> Engine::FindGOByType<Food>();
-//template class std::list<shared_ptr<GameRunner>> Engine::FindGOByType<GameRunner>();
+template class std::list<shared_ptr<GameRunner>> Engine::FindGOByType<GameRunner>();
+template class std::list<shared_ptr<ScoreBoard>> Engine::FindGOByType<ScoreBoard>();
 

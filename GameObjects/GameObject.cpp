@@ -14,6 +14,11 @@ GameObject::GameObject(WINDOW *gameWin, int y, int x) : y(y), x(x), win(gameWin)
 
 }
 
+void GameObject::Start()
+{
+
+}
+
 void GameObject::Draw()
 {
 

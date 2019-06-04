@@ -17,9 +17,10 @@ public:
     void Draw() override;
     bool Collider(std::shared_ptr<GameObject> other) override;
     int getSegmentValue();
-
+    int getScore();
 protected:
-    int segmentValue = 5;
+    int segmentValue {5};
+    int score {100};
 private:
 
 

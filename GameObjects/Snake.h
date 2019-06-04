@@ -5,12 +5,20 @@
 #ifndef SNEK_SNAKE_H
 #define SNEK_SNAKE_H
 
+/**
+ * GameRunner depends on Snake, and Snake depends on GameRunner.
+ *
+ * Since these objects are supposed to interact this is kinda just how the design of the engine
+ * works. This design might not be the worlds best, but we need to forward declare the class in order
+ * to use it.
+ */
+class GameRunner;
+
 #include "GameObject.h"
 #include "Engine/InputRouter.h"
 #include "defns.h"
 #include <list>
 #include <deque>
-
 
 /**
  * TODO: I need to figure out a better way to store these variables.
@@ -50,6 +58,7 @@ public:
     void setDirection(Direction newDirection);
     Direction getDirection();
 
+    void Start() override;
     void Update() override;
     void Draw() override;
 
@@ -84,7 +93,7 @@ protected:
     int                 length        {0};
     InputRouter         inputRouter   {};
     int                 segmentsToAdd {0};
-
+    std::shared_ptr<GameRunner> gameRunner {nullptr};
 };
 
 

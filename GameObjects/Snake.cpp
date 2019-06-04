@@ -5,6 +5,7 @@
 #include "Snake.h"
 #include "Engine/Tag.h"
 #include "Engine/Engine.h"
+#include "GameObjects/GameRunner.h"
 
 //#define HEAD_CHAR L'@'
 //#define SEGMENT_CHAR L'm'
@@ -71,6 +72,21 @@ Snake::Snake(WINDOW* win, int y, int x, int length, Direction startDirection) :
         segments.push_back(seg);
     }
 }
+
+void Snake::Start()
+{
+    // Find the game runner so we can alert it when we eat food.
+    std::list<std::shared_ptr<GameRunner>> gameRunners = gameEngine->FindGOByType<GameRunner>();
+    if (gameRunners.size() != 1)
+    {
+        // There should only be one.
+        std::logic_error("There are either zero, or more than one game runner.");
+    }
+
+    gameRunner = gameRunners.front();
+
+}
+
 
 /**
  * Force a direction change for this snake.
@@ -369,6 +385,7 @@ bool Snake::Collider(std::shared_ptr<GameObject> other)
             return false;
         }
         addSegments(tmp->getSegmentValue());
+        gameRunner->foodEaten(tmp);
     }
 
     return false;

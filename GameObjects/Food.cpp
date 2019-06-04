@@ -42,7 +42,22 @@ bool Food::Collider(std::shared_ptr<GameObject> other)
     return true;
 }
 
+/**
+ * Get the number of segments the player should be given.
+ *
+ * @return The number of segments to add to the players size.
+ */
 int Food::getSegmentValue()
 {
     return segmentValue;
+}
+
+/**
+ * Get the value of this food item.
+ *
+ * @return The score that the player should be given.
+ */
+int Food::getScore()
+{
+    return score;
 }

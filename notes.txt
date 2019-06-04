@@ -5,6 +5,9 @@
 + Considering different maps
 + Considering multiple snakes
 + Considering multiple snake colors
++ Need scoreboard
+	- Implemented a score, needs to flash, and be better.
++ Need in-game menu or some sort of controls explination.
 + Need title and end screens.
 	+ Title screen now exists.
 	- Need to check screen requirements and such.
@@ -15,3 +18,4 @@
 + Fix audio file locations. Can those be made into resources?
 + AI Now exists
 	- It sucks, could do better by recursing different "moves".
+	+ Changed how the snake advances, so this is now easier.

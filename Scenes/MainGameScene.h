@@ -13,6 +13,7 @@
 #include "GameObjects/AudioController.h"
 #include "GameObjects/GameRunner.h"
 #include "GameObjects/AISnake.h"
+#include "GameObjects/ScoreBoard.h"
 class MainGameScene : public Scene
 {
 
@@ -20,6 +21,7 @@ public:
     enum WINDOW_TAG
     {
         GAME_AREA,
+        SCORE_BOARD,
     };
     MainGameScene(std::string sceneName);
     void LoadScene() override;

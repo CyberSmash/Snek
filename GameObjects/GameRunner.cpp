@@ -11,6 +11,7 @@
 #include "Engine/Tag.h"
 #include "Engine/AudioEngine.h"
 #include "AudioController.h"
+#include "GameObjects/Snake.h"
 
 /**
  * Constructor
@@ -24,6 +25,16 @@ GameRunner::GameRunner(WINDOW * gameWindow) : GameObject(gameWindow, 0, 0)
     srand(time(nullptr));
 }
 
+
+void GameRunner::Start()
+{
+    std::list<std::shared_ptr<ScoreBoard>> scoreBoards = gameEngine->FindGOByType<ScoreBoard>();
+    if (scoreBoards.empty())
+    {
+        throw std::logic_error("You must have at least one scoreboard game object.");
+    }
+    scoreBoard = scoreBoards.front();
+}
 
 /**
  * Update The Game object.
@@ -133,4 +144,9 @@ void GameRunner::removePlayer(std::shared_ptr<Snake> const &player)
 void GameRunner::setNumFood(unsigned int newNum)
 {
     numFood = newNum;
+}
+
+void GameRunner::foodEaten(std::shared_ptr<Food> const eatenFood)
+{
+    scoreBoard->IncreaseScore(eatenFood->getScore());
 }

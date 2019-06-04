@@ -19,6 +19,8 @@ class GameObject
 public:
     GameObject();
     GameObject(WINDOW* gameWin, int y=0, int x=0);
+
+    virtual void Start(); // Called once when all objects are instantiated and loaded.
     virtual void Update(); // Our step function
     virtual void Draw(); // Draw our Game Object
 
