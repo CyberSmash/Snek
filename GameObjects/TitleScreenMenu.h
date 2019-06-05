@@ -31,6 +31,7 @@ public:
     void Update() override;
     static void startGame();
     static void quitGame();
+    static void optionsScreen();
 protected:
 
 };

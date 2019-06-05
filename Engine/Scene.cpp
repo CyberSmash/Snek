@@ -54,3 +54,26 @@ void Scene::refreshWindows()
         wrefresh(window);
     }
 }
+
+void Scene::invalidateWindows()
+{
+    for (WINDOW* win : windows)
+    {
+        delwin(win);
+    }
+    windows.clear();
+}
+
+void Scene::UnloadScene()
+{
+    invalidateWindows();
+}
+
+Scene::~Scene()
+{
+    // Clean up anything that still needs cleaned up.
+    if (!windows.empty())
+    {
+        invalidateWindows();
+    }
+}

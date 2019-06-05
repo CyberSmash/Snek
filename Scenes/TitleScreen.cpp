@@ -15,6 +15,11 @@
 TitleScreen::TitleScreen(std::string sceneName) : Scene(std::move(sceneName))
 {
 
+
+}
+
+void TitleScreen::LoadScene()
+{
     int     logo_win_height     = MAX_TOTAL_Y * 0.66;
     int     windows_start_draw  = (getmaxx(stdscr) / 2) - (MAX_TOTAL_X / 2);
     int     menu_win_height     = MAX_TOTAL_Y * 0.33;
@@ -29,10 +34,9 @@ TitleScreen::TitleScreen(std::string sceneName) : Scene(std::move(sceneName))
     //nodelay(logo_window, true);
     windows.emplace_back(logo_window);
     windows.emplace_back(menu_window);
-}
-
-void TitleScreen::LoadScene()
-{
+    wclear(stdscr);
+    wclear(windows[WINDOW_TAG::LOGO_AREA]);
+    wclear(windows[WINDOW_TAG::MENU_AREA]);
     // Resize the window passed to us.
     WINDOW* win = windows[WINDOW_TAG::LOGO_AREA];
     int centerX = CenterX(win, snek_logo[0]);
@@ -43,9 +47,7 @@ void TitleScreen::LoadScene()
 
 void TitleScreen::UnloadScene()
 {
-    for (auto win : windows)
-    {
-        delwin(win);
-    }
+    invalidateWindows();
+    gameObjects.clear();
 }
 

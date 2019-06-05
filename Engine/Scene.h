@@ -23,6 +23,8 @@ public:
     std::string getName();
     void clearWindows();
     void refreshWindows();
+    void invalidateWindows();
+    virtual ~Scene();
 
 protected:
     std::list<std::shared_ptr<GameObject>> gameObjects;

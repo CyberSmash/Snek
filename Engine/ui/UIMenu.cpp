@@ -6,11 +6,23 @@
 #include "UIMenu.h"
 #include "Engine/Engine.h"
 
+/**
+ * Constructor.
+ * @param menuWindow The window to draw the menu.
+ * @param y The y coordinate of the menu.
+ * @param x The x coordinate of the menu.
+ */
 UIMenu::UIMenu(WINDOW *menuWindow, int y, int x) : GameObject(menuWindow, y, x)
 {
 
 }
 
+/**
+ * UIMenu update function
+ *
+ * Read in input from the game Engine, then if the up arrow or down arrow are used, select the next menu item.
+ * If the enter button is hit, then select that menu item.
+ */
 void UIMenu::Update()
 {
     int input = gameEngine->getInput();
@@ -22,10 +34,13 @@ void UIMenu::Update()
     switch (input)
     {
         case KEY_UP:
-            selectedItem--;
-            if (selectedItem < 0)
+            if (selectedItem == 0)
             {
                 selectedItem = menuItems.size() - 1;
+            }
+            else
+            {
+                selectedItem = (selectedItem - 1) % menuItems.size();
             }
             break;
 
@@ -54,8 +69,6 @@ void UIMenu::Update()
  */
 void UIMenu::Draw()
 {
-
-    //box(win, 0, 0);
     int centerY = CenterY(win, menuItems.size());
 
     for (unsigned int i = 0; i < menuItems.size(); i++)

@@ -7,14 +7,15 @@
 
 #include "Engine/Scene.h"
 
-class OptionsScene : Scene
+class OptionsScene : public Scene
 {
+public:
     enum WINDOW_TAG
     {
         OPTIONS_MENU,
     };
 
-    OptionsScene(std::string sceneName);
+    explicit OptionsScene(std::string sceneName);
     void LoadScene() override;
     void UnloadScene() override;
 };

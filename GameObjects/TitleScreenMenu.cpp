@@ -14,7 +14,7 @@ const wchar_t* MENU_QUIT = L"QUIT";
 TitleScreenMenu::TitleScreenMenu(WINDOW *gameWin, int y, int x) : UIMenu(gameWin, y, x)
 {
     menuItems.emplace_back(MENU_NEW_GAME, startGame);
-    menuItems.emplace_back(MENU_OPTIONS, nullptr);
+    menuItems.emplace_back(MENU_OPTIONS, optionsScreen);
     menuItems.emplace_back(MENU_QUIT, quitGame);
 }
 
@@ -37,4 +37,9 @@ void TitleScreenMenu::startGame()
 void TitleScreenMenu::quitGame()
 {
     gameEngine->quit();
+}
+
+void TitleScreenMenu::optionsScreen()
+{
+    gameEngine->changeScene("optionsScene");
 }

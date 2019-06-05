@@ -21,7 +21,7 @@ public:
     void Draw() override;
 
 protected:
-    int selectedItem    {0};
+    unsigned int selectedItem    {0};
     std::vector<MenuItem> menuItems {};
 };
 

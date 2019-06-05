@@ -10,7 +10,7 @@
 #include "Engine.h"
 #include "AudioEngine.h"
 #include "Scenes/MainGameScene.h"
-
+#include "Scenes/OptionsScene.h"
 /**
  * Default constructor.
  */
@@ -31,6 +31,8 @@ Engine::Engine(int players)
 
     scenes.emplace_back(std::make_shared<TitleScreen>("titleScreen"));
     scenes.emplace_back(std::make_shared<MainGameScene>("gameScene"));
+    scenes.emplace_back(std::make_shared<OptionsScene>("optionsScene"));
+
     currentScene = 0;
     scenes[currentScene]->LoadScene();
     if (numPlayers == 0)
