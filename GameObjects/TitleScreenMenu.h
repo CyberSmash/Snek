@@ -6,6 +6,8 @@
 #define SNEK_TITLESCREENMENU_H
 
 #include <vector>
+#include "Engine/ui/UIMenu.h"
+#include "Engine/ui/MenuItem.h"
 #include "GameObject.h"
 
 extern const wchar_t* MENU_NEW_GAME;
@@ -20,20 +22,17 @@ enum MenuItems
     MAX_OPTIONS,
 };
 
-class TitleScreenMenu : public GameObject
+class TitleScreenMenu : public UIMenu
 {
 
 public:
-
     TitleScreenMenu(WINDOW* gameWin, int y, int x);
     void Draw() override;
     void Update() override;
-
+    static void startGame();
+    static void quitGame();
 protected:
-    unsigned int selectedItem {0};
-    std::vector<const wchar_t*> menuItems  {MENU_NEW_GAME,
-                                            MENU_OPTIONS,
-                                            MENU_QUIT};
+
 };
 
 

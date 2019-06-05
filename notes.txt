@@ -5,9 +5,9 @@
 + Considering different maps
 + Considering multiple snakes
 + Considering multiple snake colors
-+ Options menu.
++ OptionsScene UIMenu.
 + Need high score?
-+ Need in-game menu or some sort of controls explination.
++ Need in-game UIMenu or some sort of controls explination.
 + Need title and end screens.
 	+ Title screen now exists.
 	- Need to check screen requirements and such.

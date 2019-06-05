@@ -11,72 +11,30 @@ const wchar_t* MENU_OPTIONS = L"OPTIONS";
 const wchar_t* MENU_QUIT = L"QUIT";
 
 
-TitleScreenMenu::TitleScreenMenu(WINDOW *gameWin, int y, int x) : GameObject(gameWin, y, x)
+TitleScreenMenu::TitleScreenMenu(WINDOW *gameWin, int y, int x) : UIMenu(gameWin, y, x)
 {
-
+    menuItems.emplace_back(MENU_NEW_GAME, startGame);
+    menuItems.emplace_back(MENU_OPTIONS, nullptr);
+    menuItems.emplace_back(MENU_QUIT, quitGame);
 }
 
 void TitleScreenMenu::Draw()
 {
-
     box(win, 0, 0);
-    int centerY = CenterY(win, menuItems.size());
-
-    for (unsigned int i = 0; i < menuItems.size(); i++)
-    {
-        int centerX = CenterX(win, menuItems[i]);
-        wmove(win, centerY + i, centerX);
-        if (i == selectedItem)
-        {
-            wattron(win, COLOR_PAIR(1));
-            wprintw(win, "%S", menuItems[i]);
-            wattroff(win, COLOR_PAIR(1));
-
-        }
-        else
-        {
-            wattron(win, COLOR_PAIR(0));
-            wprintw(win, "%S", menuItems[i]);
-            wattroff(win, COLOR_PAIR(0));
-        }
-    }
+    UIMenu::Draw();
 }
 
 void TitleScreenMenu::Update()
 {
-    int input = gameEngine->getInput();
+    UIMenu::Update();
+}
 
-    switch(input)
-    {
-        case KEY_UP:
-            if (selectedItem == 0)
-            {
-                selectedItem = MenuItems::MAX_OPTIONS - 1;
-                break;
-            }
-            selectedItem -= 1;
-            break;
-        case KEY_DOWN:
-            if (selectedItem == MenuItems::MAX_OPTIONS - 1)
-            {
-                selectedItem = 0;
-                break;
-            }
-            selectedItem += 1;
-            break;
-        case 10: // Enter key. KEY_ENTER is for the numpad.
-            if (selectedItem == MenuItems::NEW_GAME)
-            {
-                gameEngine->changeScene("gameScene");
-            }
-            else if (selectedItem == MenuItems::QUIT)
-            {
-                gameEngine->quit();
-            }
+void TitleScreenMenu::startGame()
+{
+    gameEngine->changeScene("gameScene");
+}
 
-            break;
-
-        default:
-            break;
-    }
+void TitleScreenMenu::quitGame()
+{
+    gameEngine->quit();
 }
