@@ -7,6 +7,7 @@
 #include "GameObjects/Utils.h"
 #include "OptionsScene.h"
 
+
 OptionsScene::OptionsScene(std::string sceneName) : Scene(std::move(sceneName))
 {
 
@@ -14,7 +15,9 @@ OptionsScene::OptionsScene(std::string sceneName) : Scene(std::move(sceneName))
 
 void OptionsScene::LoadScene()
 {
-    windows.emplace_back(newwin(40, 80, 0, 0));
+    int xPos = (getmaxx(stdscr) / 2) - (80 / 2);
+    int yPos = (getmaxy(stdscr) / 2) - (40 / 2);
+    windows.emplace_back(newwin(40, 80, yPos, xPos));
     gameObjects.emplace_back(std::make_shared<OptionsMenu>(windows[WINDOW_TAG::OPTIONS_MENU], 0, 0));
 
     wclear(stdscr);
