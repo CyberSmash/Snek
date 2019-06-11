@@ -5,4 +5,4 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-apt install -y libncurses5-dev libsdl2-dev libsdl2-mixer-dev cmake
+apt install -y libncurses5-dev libsdl2-dev libsdl2-mixer-dev cmake libboost-log-dev libboost-system-dev libboost-program-options-dev
