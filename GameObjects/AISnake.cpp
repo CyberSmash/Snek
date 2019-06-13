@@ -35,7 +35,7 @@ std::shared_ptr<GameObject> AISnake::findClosest(std::list<std::shared_ptr<GameO
 
 
     double minDistance = 100;
-    shared_ptr<GameObject> selectedObject = nullptr;
+    std::shared_ptr<GameObject> selectedObject = nullptr;
     for (auto const &food : foods)
     {
         // Calculate distance.
@@ -76,6 +76,7 @@ void AISnake::pickDirection()
     if (food == nullptr)
     {
         // TODO: I really do need some method of logging.
+
         return;
     }
 

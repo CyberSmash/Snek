@@ -75,7 +75,7 @@ void Engine::MainLoop()
         inputRouter->checkInput();
         input = inputRouter->getInput();
 
-        for (shared_ptr<GameObject> const &go : scenes[currentScene]->getGameObjects())
+        for (std::shared_ptr<GameObject> const &go : scenes[currentScene]->getGameObjects())
         {
             // Move the game forward
             go->Update();
@@ -182,7 +182,7 @@ void Engine::RunGame()
  * Add a game object to the game.
  * @param go The game object to add.
  */
-void Engine::addGameObject(shared_ptr<GameObject> go)
+void Engine::addGameObject(std::shared_ptr<GameObject> go)
 {
     if (go == nullptr)
     {
@@ -218,7 +218,7 @@ int Engine::numGameObjects()
 bool Engine::areAnyDead()
 {
 
-    std::list<shared_ptr<Snake>> snakes = FindGOByType<Snake>();
+    std::list<std::shared_ptr<Snake>> snakes = FindGOByType<Snake>();
     for (auto const &snake : snakes)
     {
         if (snake->isDead())
@@ -247,18 +247,18 @@ bool Engine::areAnyDead()
  * @return A list of all of the objects matching the type.
  */
 template<typename T>
-std::list<shared_ptr<T>> Engine::FindGOByType()
+std::list<std::shared_ptr<T>> Engine::FindGOByType()
 {
-    std::list<shared_ptr<T>> l;
+    std::list<std::shared_ptr<T>> l;
     std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
     // I could use auto here. However, I don't like doing that unless the type is
     // difficult to predict (such as with iterators) or if the actual type isn't somewhere
     // nearby.
-    for (shared_ptr<GameObject> const &go : gameObjects)
+    for (std::shared_ptr<GameObject> const &go : gameObjects)
     {
         // Downcast the pointer. If the downcast fails, then nullptr will be returned, and
         // the object isn't the one we want.
-        shared_ptr<T> tmp = std::dynamic_pointer_cast<T>(go);
+        std::shared_ptr<T> tmp = std::dynamic_pointer_cast<T>(go);
         if (tmp != nullptr)
         {
             l.emplace_back(tmp);
@@ -375,9 +375,9 @@ void Engine::quit()
  */
 std::shared_ptr<Engine> gameEngine;
 
-template class std::list<shared_ptr<GameObject>> Engine::FindGOByType<GameObject>();
-template class std::list<shared_ptr<Snake>> Engine::FindGOByType<Snake>();
-template class std::list<shared_ptr<Food>> Engine::FindGOByType<Food>();
-template class std::list<shared_ptr<GameRunner>> Engine::FindGOByType<GameRunner>();
-template class std::list<shared_ptr<ScoreBoard>> Engine::FindGOByType<ScoreBoard>();
+template class std::list<std::shared_ptr<GameObject>> Engine::FindGOByType<GameObject>();
+template class std::list<std::shared_ptr<Snake>> Engine::FindGOByType<Snake>();
+template class std::list<std::shared_ptr<Food>> Engine::FindGOByType<Food>();
+template class std::list<std::shared_ptr<GameRunner>> Engine::FindGOByType<GameRunner>();
+template class std::list<std::shared_ptr<ScoreBoard>> Engine::FindGOByType<ScoreBoard>();
 

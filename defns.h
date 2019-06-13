@@ -8,11 +8,6 @@
 #include <memory>
 #include "GameObjects/GameObject.h"
 
-// Easily remember if Y comes first or X comes first, also helps
-// when indexing into a tuple.
-#define Y 0
-#define X 1
-
 enum class Direction
 {
     UP      = 0,

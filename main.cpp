@@ -1,11 +1,3 @@
-#include <boost/log/core.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/sinks/text_file_backend.hpp>
-#include <boost/log/utility/setup/file.hpp>
-#include <boost/log/utility/setup/common_attributes.hpp>
-#include <boost/log/sources/severity_logger.hpp>
-#include <boost/log/sources/record_ostream.hpp>
 #include <boost/program_options.hpp>
 
 #include <iostream>
@@ -23,11 +15,16 @@
 #include "Engine/AudioEngine.h"
 #include <memory>
 
-#define Y 0
-#define X 1
+#define MINIMUM_Y_NEEDED 40
+#define MINIMUM_X_NEEDED 80
 
 namespace po = boost::program_options;
 boost::log::sources::severity_logger< boost::log::trivial::severity_level > lg;
+
+
+/**
+ * Set up the ncurses screen.
+ */
 void setup_screen()
 {
     setlocale(LC_ALL, "");
@@ -40,6 +37,11 @@ void setup_screen()
     start_color();
 }
 
+/**
+ * Initialize logging to the disk.
+ *
+ * @param filename The file to log to. This can be set on the command line.
+ */
 void setup_logging(std::string filename)
 {
     /**
@@ -48,21 +50,35 @@ void setup_logging(std::string filename)
     boost::log::add_common_attributes();
     boost::log::add_file_log(boost::log::keywords::file_name=filename, boost::log::keywords::format="[%TimeStamp%]: %Message%");
     boost::log::core::get()->set_filter(boost::log::trivial::severity >= boost::log::trivial::info);
+}
 
+/**
+ * A helper function for simply getting the command line parameters.
+ *
+ * @param argc Number of arguments as passed to main.
+ * @param argv The arguments as passed to main.
+ * @param desc The description object passed as a reference
+ * @param vm THe variable map that will store our variable values.
+ */
+void get_args(int argc, char* argv[], po::options_description& desc, po::variables_map& vm)
+{
+
+    desc.add_options()
+            ("help", "Show help message")
+            ("logfile", po::value<std::string>()->default_value("/tmp/engine.log"), "Set engine log file location and name.");
+
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+
+    po::notify(vm);
 }
 
 int main(int argc, char* argv[])
 {
     std::string enginelogfile = "./engine.log";
+
     po::options_description desc("Snek Command Line Options");
-    desc.add_options()
-            ("help", "Show help message")
-            ("logfile", po::value<std::string>()->default_value("/tmp/engine.log"), "Set engine log file location and name.");
-
     po::variables_map vm;
-    po::store(po::parse_command_line(argc, argv, desc), vm);
-
-    po::notify(vm);
+    get_args(argc, argv, desc, vm);
 
     if (vm.count("help"))
     {
@@ -82,6 +98,18 @@ int main(int argc, char* argv[])
 
     // after this point stdscr is now available as well as
     setup_screen();
+
+    // Check that stdscr is the minimum size.
+    if (getmaxy(stdscr) <= MINIMUM_Y_NEEDED || getmaxx(stdscr) <= MINIMUM_X_NEEDED)
+    {
+        endwin();
+        std::cout << "Your terminal size is only " << getmaxx(stdscr) << " columns wide and "
+        << getmaxy(stdscr) << " rows high. You need a minimum of " << MINIMUM_X_NEEDED << " columns and " << MINIMUM_Y_NEEDED
+        << " lines hight." << std::endl;
+
+        return 0;
+    }
+
     gameEngine = std::make_shared<Engine>(0);
 
     gameEngine->MainLoop();
