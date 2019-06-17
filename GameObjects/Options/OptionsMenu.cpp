@@ -9,12 +9,12 @@ const wchar_t* OPTION_SOUNDFX_STRING = L"SOUNDFX";
 const wchar_t* OPTION_AI_STRING = L"SNAKE AI";
 const wchar_t* OPTION_BACK = L"MAIN MENU";
 
-OptionsMenu::OptionsMenu(WINDOW *menuWindow, int y, int x) : UIMenu(menuWindow, y, x)
+OptionsMenu::OptionsMenu(WINDOW *menuWindow, ALIGNMENT item_alignment, int y, int x) : UIMenu(menuWindow, item_alignment, y, x)
 {
-    menuItems.emplace_back(OPTION_MUSIC_STRING, nullptr);
+    menuItems.emplace_back(OPTION_MUSIC_STRING,   nullptr);
     menuItems.emplace_back(OPTION_SOUNDFX_STRING, nullptr);
-    menuItems.emplace_back(OPTION_AI_STRING, nullptr);
-    menuItems.emplace_back(OPTION_BACK, goBack);
+    menuItems.emplace_back(OPTION_AI_STRING,      nullptr);
+    menuItems.emplace_back(OPTION_BACK,           goBack);
 }
 
 void OptionsMenu::Update()

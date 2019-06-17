@@ -44,7 +44,7 @@ void GameRunner::Start()
 void GameRunner::Update()
 {
     // Determine how many food items are still around
-    std::list<std::shared_ptr<GameObject>> foodItems = gameEngine->FindAllByTag(Tag::FOOD);
+    std::list<GameObjectSptr> foodItems = gameEngine->FindAllByTag(Tag::FOOD);
 
     for (unsigned int i = foodItems.size(); i < numFood; i++)
     {

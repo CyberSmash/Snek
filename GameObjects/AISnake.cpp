@@ -16,13 +16,13 @@ AISnake::AISnake(WINDOW *win, int y, int x, int length, Direction startDirection
 /**
  * Find the closest food item by calculating the distance.
  *
- * @note: if only one food item exists, we won't performa any calculation, and return
+ * @note: if only one food item exists, we won't perform any calculation, and return
  * the only one.
  *
  * @param foods All of the foods in the play area.
  * @return The closest food item.
  */
-std::shared_ptr<GameObject> AISnake::findClosest(std::list<std::shared_ptr<GameObject>> foods)
+GameObjectSptr AISnake::findClosest(std::list<GameObjectSptr> foods)
 {
     if (foods.empty())
     {
@@ -35,7 +35,7 @@ std::shared_ptr<GameObject> AISnake::findClosest(std::list<std::shared_ptr<GameO
 
 
     double minDistance = 100;
-    std::shared_ptr<GameObject> selectedObject = nullptr;
+    GameObjectSptr selectedObject = nullptr;
     for (auto const &food : foods)
     {
         // Calculate distance.
@@ -64,13 +64,13 @@ std::shared_ptr<GameObject> AISnake::findClosest(std::list<std::shared_ptr<GameO
  */
 void AISnake::pickDirection()
 {
-    std::list<std::shared_ptr<GameObject>> food_game_objects = gameEngine->FindAllByTag(Tag::FOOD);
+    std::list<GameObjectSptr> food_game_objects = gameEngine->FindAllByTag(Tag::FOOD);
     if (food_game_objects.empty())
     {
         return;
     }
 
-    std::shared_ptr<GameObject> closestFood = findClosest(food_game_objects);
+    GameObjectSptr closestFood = findClosest(food_game_objects);
 
     std::shared_ptr<Food> food = std::dynamic_pointer_cast<Food>(food_game_objects.front());
     if (food == nullptr)
@@ -157,7 +157,7 @@ void AISnake::pickDirection()
  * @retval Direction::LEFT if we would want to increase our X value.
  * @retval Direction::RIGHT if we want to decrease our X value.
  */
-Direction AISnake::getDesiredXDirection(std::shared_ptr<GameObject> closestFood)
+Direction AISnake::getDesiredXDirection(GameObjectSptr closestFood)
 {
     int xDistance = getx() - closestFood->getx();
 
@@ -190,7 +190,7 @@ Direction AISnake::getDesiredXDirection(std::shared_ptr<GameObject> closestFood)
  * @retval Direction::UP if we would want to decrease our Y value.
  * @retval Direction::DOWN if we want to increase our Y value.
  */
-Direction AISnake::getDesiredYDirection(std::shared_ptr<GameObject> const closestFood)
+Direction AISnake::getDesiredYDirection(GameObjectSptr const closestFood)
 {
     int y_distance = gety() - closestFood->gety();
     if (y_distance == 0)
@@ -222,10 +222,6 @@ Direction AISnake::getDesiredYDirection(std::shared_ptr<GameObject> const closes
  */
 bool AISnake::isConcave(Direction chosenDirection)
 {
-    int maxx = 0;
-    int maxy = 0;
-
-    getmaxyx(win, maxy, maxx);
 
     int nexty = gety();
     int nextx = getx();

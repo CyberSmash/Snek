@@ -373,7 +373,7 @@ const wchar_t* Snake::pickHeadCharacter()
     }
 }
 
-bool Snake::Collider(std::shared_ptr<GameObject> other)
+bool Snake::Collider(GameObjectSptr other)
 {
     // TODO: Determine what happens if we hit another snake.
     if (other->getTag() == Tag::FOOD )

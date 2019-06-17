@@ -10,7 +10,9 @@
 class MenuItem
 {
 public:
+
     MenuItem(const wchar_t* label, std::function<void(void)> itemSelectedCallback);
+    ~MenuItem() = default;
 
     const wchar_t*              itemLabel   {nullptr};
     std::function<void(void)>   callBack    {nullptr};

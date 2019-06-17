@@ -6,13 +6,16 @@
 #define SNEK_GAMEOBJECT_H
 
 #include <ncurses.h>
-#include <tuple>
 #include <string>
 #include <functional>
 #include <memory>
 #include "defns.h"
 #include "Engine/Tag.h"
-using std::tuple;
+
+class GameObject;
+
+typedef std::shared_ptr<GameObject> GameObjectSptr;
+
 
 class GameObject
 {
@@ -34,7 +37,7 @@ public:
     virtual int gety();
     virtual int getx();
 
-    virtual bool Collider(std::shared_ptr<GameObject> other);
+    virtual bool Collider(GameObjectSptr other);
 
     virtual ~GameObject() = default;
 
@@ -51,6 +54,7 @@ protected:
     WINDOW* win = nullptr;
     bool destroy = false;
 };
+
 
 
 #endif //SNEK_GAMEOBJECT_H

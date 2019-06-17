@@ -14,12 +14,12 @@ std::string Scene::getName()
     return name;
 }
 
-std::list<std::shared_ptr<GameObject>> Scene::getGameObjects()
+std::list<GameObjectSptr> Scene::getGameObjects()
 {
     return gameObjects;
 }
 
-void Scene::addGameObject(std::shared_ptr<GameObject> gameObject)
+void Scene::addGameObject(GameObjectSptr gameObject)
 {
     gameObjects.emplace_back(gameObject);
 }
@@ -29,7 +29,7 @@ void Scene::removeDestroyed()
 {
     for (auto it = gameObjects.begin(); it != gameObjects.end();)
     {
-        std::shared_ptr<GameObject> tmp = *it;
+        GameObjectSptr tmp = *it;
         if (tmp->isDestroyed())
         {
             it = gameObjects.erase(it);

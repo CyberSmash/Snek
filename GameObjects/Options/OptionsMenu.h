@@ -14,7 +14,7 @@
 class OptionsMenu : public UIMenu
 {
 public:
-    OptionsMenu(WINDOW* menuWindow, int y, int x);
+    OptionsMenu(WINDOW* menuWindow, ALIGNMENT item_alignment, int y, int x);
     void Update() override;
     void Draw() override;
 private:

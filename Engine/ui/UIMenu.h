@@ -14,15 +14,23 @@
 
 class UIMenu : public GameObject
 {
-public:
 
-    UIMenu(WINDOW* menuWindow, int y, int x);
+public:
+    enum class ALIGNMENT
+    {
+        ALL_CENTER,
+        CENTER_LEFT,
+        CENTER_RIGHT,
+    };
+
+    UIMenu(WINDOW* menuWindow, ALIGNMENT itemAlignment, int y, int x);
     void Update() override;
     void Draw() override;
 
 protected:
-    unsigned int selectedItem    {0};
-    std::vector<MenuItem> menuItems {};
+    unsigned int            selectedItem    {0};
+    std::vector<MenuItem>   menuItems       {};
+    ALIGNMENT               alignment       {ALIGNMENT::ALL_CENTER};
 };
 
 

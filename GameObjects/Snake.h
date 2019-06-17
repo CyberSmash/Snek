@@ -72,7 +72,7 @@ public:
     int getLength() { return segments.size(); }
 
     void addSegments(int numSegments);
-    bool Collider(std::shared_ptr<GameObject> other) override;
+    bool Collider(GameObjectSptr other) override;
 
     bool outOfBounds();
 

@@ -17,12 +17,12 @@ public:
 
 protected:
     void pickDirection();
-    Direction getDesiredXDirection(std::shared_ptr<GameObject> closestFood);
-    Direction getDesiredYDirection(std::shared_ptr<GameObject> closestFood);
+    Direction getDesiredXDirection(GameObjectSptr closestFood);
+    Direction getDesiredYDirection(GameObjectSptr closestFood);
     vector<Direction> directionsAvailable();
     bool segmentExistsAt(int y, int x);
     bool isConcave(Direction chosenDirection);
-    std::shared_ptr<GameObject> findClosest(std::list<std::shared_ptr<GameObject>> foods);
+    GameObjectSptr findClosest(std::list<GameObjectSptr> foods);
 
 };
 

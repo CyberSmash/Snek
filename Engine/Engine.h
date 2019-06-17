@@ -55,11 +55,11 @@ public:
     void                        changeScene(int newScene);
     void                        changeScene(std::string sceneName);
     void                        quit();
-    void                        addGameObject(std::shared_ptr<GameObject> go);
+    void                        addGameObject(GameObjectSptr go);
     void                        RunGame();
     int                         numGameObjects();
     int                         getInput();
-    std::list<std::shared_ptr<GameObject>> FindAllByTag(Tag tag);
+    std::list<GameObjectSptr>   FindAllByTag(Tag tag);
 
     bool gameObjectAtLocation(int y, int x);
     void getLogger();

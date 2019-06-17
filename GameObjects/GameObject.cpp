@@ -80,7 +80,7 @@ void GameObject::setTag(Tag newTag)
     tag = newTag;
 }
 
-bool GameObject::Collider(std::shared_ptr<GameObject> other)
+bool GameObject::Collider(GameObjectSptr other)
 {
     return false;
 }

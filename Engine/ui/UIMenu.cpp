@@ -12,7 +12,7 @@
  * @param y The y coordinate of the menu.
  * @param x The x coordinate of the menu.
  */
-UIMenu::UIMenu(WINDOW *menuWindow, int y, int x) : GameObject(menuWindow, y, x)
+UIMenu::UIMenu(WINDOW *menuWindow, ALIGNMENT itemAlignment, int y, int x) : GameObject(menuWindow, y, x), alignment(itemAlignment)
 {
 
 }
@@ -70,11 +70,28 @@ void UIMenu::Update()
 void UIMenu::Draw()
 {
     int centerY = CenterY(win, menuItems.size());
-
     for (unsigned int i = 0; i < menuItems.size(); i++)
     {
-        int centerX = CenterX(win, menuItems[i].itemLabel);
-        wmove(win, centerY + i, centerX);
+        if (alignment == ALIGNMENT::ALL_CENTER)
+        {
+            // Align each menu item individually based on it's size
+            int centerX = CenterX(win, menuItems[i].itemLabel);
+            wmove(win, centerY + i, centerX);
+
+        }
+
+        if (alignment == ALIGNMENT::CENTER_LEFT)
+        {
+            // Align based on the center location of the first menu item.
+            int centerX = CenterX(win, menuItems[0].itemLabel);
+            wmove(win, centerY + i, centerX);
+        }
+
+        if (alignment == ALIGNMENT::CENTER_RIGHT)
+        {
+            throw std::logic_error("CENTER_RIGHT alignment not implemented yet.");
+        }
+
         if (i == selectedItem)
         {
             wattron(win, COLOR_PAIR(1));

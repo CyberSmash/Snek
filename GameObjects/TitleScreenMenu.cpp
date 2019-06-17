@@ -11,7 +11,7 @@ const wchar_t* MENU_OPTIONS = L"OPTIONS";
 const wchar_t* MENU_QUIT = L"QUIT";
 
 
-TitleScreenMenu::TitleScreenMenu(WINDOW *gameWin, int y, int x) : UIMenu(gameWin, y, x)
+TitleScreenMenu::TitleScreenMenu(WINDOW *gameWin, int y, int x) : UIMenu(gameWin, UIMenu::ALIGNMENT::CENTER_LEFT, y, x)
 {
     menuItems.emplace_back(MENU_NEW_GAME, startGame);
     menuItems.emplace_back(MENU_OPTIONS, optionsScreen);

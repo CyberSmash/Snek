@@ -32,7 +32,7 @@ void Food::Draw()
  * @param go
  * @return
  */
-bool Food::Collider(std::shared_ptr<GameObject> other)
+bool Food::Collider(GameObjectSptr other)
 {
     if (other->getTag() == Tag::PLAYER)
     {

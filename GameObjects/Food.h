@@ -15,7 +15,7 @@ public:
     ~Food() = default;
     void Update() override;
     void Draw() override;
-    bool Collider(std::shared_ptr<GameObject> other) override;
+    bool Collider(GameObjectSptr other) override;
     int getSegmentValue();
     int getScore();
 protected:

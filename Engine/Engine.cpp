@@ -75,7 +75,7 @@ void Engine::MainLoop()
         inputRouter->checkInput();
         input = inputRouter->getInput();
 
-        for (std::shared_ptr<GameObject> const &go : scenes[currentScene]->getGameObjects())
+        for (GameObjectSptr const &go : scenes[currentScene]->getGameObjects())
         {
             // Move the game forward
             go->Update();
@@ -119,7 +119,7 @@ void Engine::processCollisions()
     // auto x - Works with copies
     // auto &x - Work with original, but I might make changes
     // auto const &x - Work with original, with no changes.
-    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
+    std::list<GameObjectSptr> gameObjects = scenes[currentScene]->getGameObjects();
     for (auto const &go : gameObjects)
     {
         for ( auto const &other : gameObjects)
@@ -182,13 +182,13 @@ void Engine::RunGame()
  * Add a game object to the game.
  * @param go The game object to add.
  */
-void Engine::addGameObject(std::shared_ptr<GameObject> go)
+void Engine::addGameObject(GameObjectSptr go)
 {
     if (go == nullptr)
     {
         return;
     }
-    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
+    std::list<GameObjectSptr> gameObjects = scenes[currentScene]->getGameObjects();
     auto it = std::find(std::begin(gameObjects), std::end(gameObjects), go);
     if (it != std::end(gameObjects))
     {
@@ -250,11 +250,11 @@ template<typename T>
 std::list<std::shared_ptr<T>> Engine::FindGOByType()
 {
     std::list<std::shared_ptr<T>> l;
-    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
+    std::list<GameObjectSptr> gameObjects = scenes[currentScene]->getGameObjects();
     // I could use auto here. However, I don't like doing that unless the type is
     // difficult to predict (such as with iterators) or if the actual type isn't somewhere
     // nearby.
-    for (std::shared_ptr<GameObject> const &go : gameObjects)
+    for (GameObjectSptr const &go : gameObjects)
     {
         // Downcast the pointer. If the downcast fails, then nullptr will be returned, and
         // the object isn't the one we want.
@@ -275,10 +275,10 @@ std::list<std::shared_ptr<T>> Engine::FindGOByType()
  * @param gameObjects The game objects to search through
  * @return A list of matching game objects. This list will be empty if none are found.
  */
-std::list<std::shared_ptr<GameObject>> Engine::FindAllByTag(Tag tag)
+std::list<GameObjectSptr> Engine::FindAllByTag(Tag tag)
 {
-    std::list<std::shared_ptr<GameObject>> matches;
-    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
+    std::list<GameObjectSptr> matches;
+    std::list<GameObjectSptr> gameObjects = scenes[currentScene]->getGameObjects();
     for (auto const &go : gameObjects)
     {
         if (go->getTag() == tag)
@@ -302,7 +302,7 @@ std::list<std::shared_ptr<GameObject>> Engine::FindAllByTag(Tag tag)
  */
 bool Engine::gameObjectAtLocation(int y, int x)
 {
-    std::list<std::shared_ptr<GameObject>> gameObjects = scenes[currentScene]->getGameObjects();
+    std::list<GameObjectSptr> gameObjects = scenes[currentScene]->getGameObjects();
     for (auto const &go : gameObjects)
     {
         if (go->getx() == x && go->gety() == y)
@@ -338,7 +338,7 @@ void Engine::internalChangeScene()
         scenes[currentScene]->LoadScene();
 
         // Now for each object in the scene, call the start function so they can set up.
-        for(std::shared_ptr<GameObject> gameObject : scenes[currentScene]->getGameObjects())
+        for(GameObjectSptr gameObject : scenes[currentScene]->getGameObjects())
         {
             gameObject->Start();
         }
@@ -375,7 +375,7 @@ void Engine::quit()
  */
 std::shared_ptr<Engine> gameEngine;
 
-template class std::list<std::shared_ptr<GameObject>> Engine::FindGOByType<GameObject>();
+template class std::list<GameObjectSptr> Engine::FindGOByType<GameObject>();
 template class std::list<std::shared_ptr<Snake>> Engine::FindGOByType<Snake>();
 template class std::list<std::shared_ptr<Food>> Engine::FindGOByType<Food>();
 template class std::list<std::shared_ptr<GameRunner>> Engine::FindGOByType<GameRunner>();

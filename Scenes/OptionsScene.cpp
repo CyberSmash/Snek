@@ -18,7 +18,7 @@ void OptionsScene::LoadScene()
     int xPos = (getmaxx(stdscr) / 2) - (80 / 2);
     int yPos = (getmaxy(stdscr) / 2) - (40 / 2);
     windows.emplace_back(newwin(40, 80, yPos, xPos));
-    gameObjects.emplace_back(std::make_shared<OptionsMenu>(windows[WINDOW_TAG::OPTIONS_MENU], 0, 0));
+    gameObjects.emplace_back(std::make_shared<OptionsMenu>(windows[WINDOW_TAG::OPTIONS_MENU], OptionsMenu::ALIGNMENT::CENTER_LEFT, 0, 0));
 
     wclear(stdscr);
     wclear(windows[WINDOW_TAG::OPTIONS_MENU]);
