@@ -4,6 +4,7 @@
 
 #include "AudioEngine.h"
 #include <exception>
+#include <stdexcept>
 
 #define EAT_FOOD_FILE "../audio/leisure_video_game_retro_8bit_object_pickup_collect.wav"
 #define BACKGROUND_MUSIC_FILE "../audio/PM_ATG_3_110BPM_E.wav"
